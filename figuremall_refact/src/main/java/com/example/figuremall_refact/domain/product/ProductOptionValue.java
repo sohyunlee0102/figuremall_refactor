@@ -41,10 +41,10 @@ public class ProductOptionValue extends BaseEntity {
     @Column(nullable = false)
     private Long stock;
 
-    @OneToMany(mappedBy = "productOptionValue", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productOptionValue", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItemOption> orderItemOptions;
 
-    @OneToMany(mappedBy = "productOptionValue", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productOptionValue", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CartItemOption> cartItemOptions = new ArrayList<>();
 
 }

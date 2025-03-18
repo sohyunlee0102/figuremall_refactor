@@ -38,7 +38,7 @@ public class OrderItem extends BaseEntity {
     @Column(nullable = false)
     private Integer price;
 
-    @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItemOption> orderItemOptions = new ArrayList<>();
 
 }

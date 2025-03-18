@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -29,6 +31,7 @@ public class ProductService {
         Product product = Product.builder()
                 .name(productInfo.getName())
                 .price(productInfo.getPrice())
+                .likeCount(0)
                 .description(productInfo.getDescription())
                 .build();
 

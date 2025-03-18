@@ -35,7 +35,10 @@ public enum ErrorStatus implements BaseErrorCode {
     PRODUCT_NOT_FOUND(HttpStatus.BAD_REQUEST, "PRODUCT4001", "존재하지 않는 상품 ID 입니다."),
     PRODUCT_OPTION_NOT_FOUND(HttpStatus.BAD_REQUEST, "PRODUCT4002", "존재하지 않는 상품 옵션 ID 입니다."),
     PRODUCT_OPTION_VALUE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PRODUCT4003", "존재하지 않는 상품 옵션 값 ID 입니다."),
-    PRODUCT_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PRODUCT4003", "존재하지 않는 상품 이미지 ID 입니다."),
+    PRODUCT_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PRODUCT4004", "존재하지 않는 상품 이미지 ID 입니다."),
+
+    // 찜 관련 에러
+    WISHLIST_NOT_FOUND(HttpStatus.BAD_REQUEST, "WISHLIST4001", "존재하지 않는 찜 ID 입니다."),
 
     // 습관 관련 에러
     HABIT_NOT_FOUND(HttpStatus.BAD_REQUEST, "HABIT4001", "존재하지 않는 습관 ID 입니다."),

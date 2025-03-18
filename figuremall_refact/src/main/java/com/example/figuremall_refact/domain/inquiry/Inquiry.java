@@ -40,7 +40,7 @@ public class Inquiry extends BaseEntity {
     @Column(nullable = false, length = 20)
     private InquiryStatus inquiryStatus;
 
-    @OneToMany(mappedBy = "inquiry", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<InquiryResponse> responses = new ArrayList<>();
 
 }

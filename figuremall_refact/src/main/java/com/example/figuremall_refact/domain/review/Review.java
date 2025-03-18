@@ -39,7 +39,7 @@ public class Review extends BaseEntity {
     @Column(nullable = false)
     private Float rating;
 
-    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ReviewImage> images = new ArrayList<>();
 
 }

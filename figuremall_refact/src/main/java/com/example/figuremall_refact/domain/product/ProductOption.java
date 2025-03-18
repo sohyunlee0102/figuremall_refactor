@@ -30,7 +30,7 @@ public class ProductOption extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String optionName;
 
-    @OneToMany(mappedBy = "productOption", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productOption", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductOptionValue> values = new ArrayList<>();
 
 }
