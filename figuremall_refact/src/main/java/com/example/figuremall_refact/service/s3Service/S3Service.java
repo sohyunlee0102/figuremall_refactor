@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.service.s3Service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,21 @@ public class S3Service {
 
     private String generateFileName(MultipartFile file) {
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        return UUID.randomUUID().toString() + extension; // 파일 이름을 랜덤하게 생성
+        return UUID.randomUUID().toString() + extension;
+    }
+
+    public void deleteFile(String imageUrl) {
+        try {
+            String fileName = extractFileNameFromUrl(imageUrl);
+
+            amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+        } catch (Exception e) {
+            throw new RuntimeException("S3 파일 삭제 중 오류 발생: " + e.getMessage());
+        }
+    }
+
+    private String extractFileNameFromUrl(String imageUrl) {
+        return imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
     }
 
 }
