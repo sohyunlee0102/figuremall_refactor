@@ -43,10 +43,11 @@ public enum ErrorStatus implements BaseErrorCode {
     // 리뷰 관련 에러
     REVIEW_NOT_FOUND(HttpStatus.BAD_REQUEST, "HABIT4001", "존재하지 않는 리뷰 ID 입니다."),
     REVIEW_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "HABIT4002", "존재하지 않는 리뷰 이미지 ID 입니다."),
-    REVIEW_NOT_OWNED(HttpStatus.BAD_REQUEST, "HABIT4002", "리뷰 수정 권한이 없습니다."),
+    REVIEW_NOT_OWNED(HttpStatus.BAD_REQUEST, "HABIT4003", "리뷰 수정 권한이 없습니다."),
 
-    // 돌 관련 에러
-    STONE_NOT_FOUND(HttpStatus.BAD_REQUEST, "STONE4001", "존재하지 않는 돌 ID 입니다."),
+    // 문의 관련 에러
+    INQUIRY_NOT_FOUND(HttpStatus.BAD_REQUEST, "INQUIRY4001", "존재하지 않는 문의 ID 입니다."),
+    INQUIRY_RESPONSE_NOT_FOUND(HttpStatus.BAD_REQUEST, "STONE4002", "존재하지 않는 문의 답변 ID 입니다."),
 
     //일기 관련 에러
 
