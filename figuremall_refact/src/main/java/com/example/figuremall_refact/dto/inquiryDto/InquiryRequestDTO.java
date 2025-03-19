@@ -33,4 +33,16 @@ public class InquiryRequestDTO {
 
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddInquiryResponseDto {
+
+        @NotNull
+        Long inquiryId;
+        @NotBlank
+        String content;
+
+    }
+
 }

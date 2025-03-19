@@ -12,7 +12,7 @@ public class InquiryResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateInquiryResponseDto {
-        Long inquiryId;
+        Long inquiryResponseId;
     }
 
 }
