@@ -49,8 +49,10 @@ public enum ErrorStatus implements BaseErrorCode {
     INQUIRY_NOT_FOUND(HttpStatus.BAD_REQUEST, "INQUIRY4001", "존재하지 않는 문의 ID 입니다."),
     INQUIRY_RESPONSE_NOT_FOUND(HttpStatus.BAD_REQUEST, "STONE4002", "존재하지 않는 문의 답변 ID 입니다."),
 
-    //일기 관련 에러
+    // 상품 카테고리 관련 에러
+    CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "CATEGORY4001", "존재하지 않는 카테고리 ID 입니다."),
 
+    //일기 관련 에러
     DIARY_NOT_FOUND(HttpStatus.BAD_REQUEST,"DIARY4001","해당 날짜에 기록한 일기가 존재하지 않습니다."),
     DIARY_ISNT_MINE(HttpStatus.BAD_REQUEST,"DIARY4002","일기의 id와 자신의 id가 일치하지 않습니다."),
 

@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.domain.product;
 
 import com.example.figuremall_refact.domain.cart.CartItem;
+import com.example.figuremall_refact.domain.category.Category;
 import com.example.figuremall_refact.domain.common.BaseEntity;
 import com.example.figuremall_refact.domain.order.OrderItem;
 import com.example.figuremall_refact.domain.review.Review;
@@ -41,6 +42,10 @@ public class Product extends BaseEntity {
 
     @Column(nullable = false)
     private Integer likeCount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ProductImage> images = new ArrayList<>();
