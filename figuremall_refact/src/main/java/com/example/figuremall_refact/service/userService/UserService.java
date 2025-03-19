@@ -3,6 +3,7 @@ package com.example.figuremall_refact.service.userService;
 import com.example.figuremall_refact.apiPayload.code.status.ErrorStatus;
 import com.example.figuremall_refact.apiPayload.exception.handler.UserAddressHandler;
 import com.example.figuremall_refact.apiPayload.exception.handler.UserHandler;
+import com.example.figuremall_refact.domain.cart.Cart;
 import com.example.figuremall_refact.domain.enums.Role;
 import com.example.figuremall_refact.domain.enums.Status;
 import com.example.figuremall_refact.domain.listener.ListenerUtil;
@@ -12,6 +13,7 @@ import com.example.figuremall_refact.dto.userDto.UserRequestDTO;
 import com.example.figuremall_refact.dto.userDto.UserResponseDTO;
 import com.example.figuremall_refact.repository.userRepository.UserAddressRepository;
 import com.example.figuremall_refact.repository.userRepository.UserRepository;
+import com.example.figuremall_refact.service.cartService.CartService;
 import com.example.figuremall_refact.service.s3Service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class UserService {
     private final StringRedisTemplate stringRedisTemplate;
     private final S3Service s3Service;
     private final UserAddressRepository userAddressRepository;
+    private final CartService cartService;
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
@@ -75,6 +78,9 @@ public class UserService {
         newUser.encodePassword(passwordEncoder.encode(newUser.getPassword()));
 
         userRepository.save(newUser);
+
+        Cart cart = cartService.createCart(newUser);
+        newUser.setCart(cart);
 
         ListenerUtil.enableListener();
 
