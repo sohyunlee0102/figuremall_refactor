@@ -44,6 +44,31 @@ public class ProductService {
     }
 
     @Transactional
+    public ProductResponseDTO.AddProductResponseDto editProduct(ProductRequestDTO.EditProductDto request, MultipartFile[] files) {
+        Product product = findProductById(request.getProductId());
+
+        if (request.getName() != null) {
+            product.setName(request.getName());
+        }
+
+        if (request.getPrice() != null) {
+            product.setPrice(request.getPrice());
+        }
+
+        if (request.getDescription() != null) {
+            product.setDescription(request.getDescription());
+        }
+
+        if (request.getOptions() != null) {
+            productOptionService.editProductOptions(request.getOptions());
+        }
+
+        productImageService.updateProductImages(product, request.getImages(), request.getDeleteImageIds(), files);
+
+        return new ProductResponseDTO.AddProductResponseDto(product.getId());
+    }
+
+    @Transactional
     public void deleteProduct(ProductRequestDTO.DeleteProductDto request) {
         productRepository.deleteById(request.getProductId());
     }

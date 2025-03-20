@@ -38,4 +38,23 @@ public class ProductOptionValueService {
         }
     }
 
+    @Transactional
+    public void editValues(List<ProductRequestDTO.EditProductOptionValueDTO> requestList) {
+        for (ProductRequestDTO.EditProductOptionValueDTO request : requestList) {
+            ProductOptionValue productOptionValue = findById(request.getValueId());
+
+            if (request.getValueName() != null) {
+                productOptionValue.setValueName(request.getValueName());
+            }
+
+            if (request.getExtraPrice() != null) {
+                productOptionValue.setExtraPrice(request.getExtraPrice());
+            }
+
+            if (request.getStock() != null) {
+                productOptionValue.setStock(request.getStock());
+            }
+        }
+    }
+
 }

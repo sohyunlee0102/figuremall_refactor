@@ -26,6 +26,13 @@ public class ProductController {
         return ApiResponse.onSuccess(productService.addProduct(request, files, imageInfo));
     }
 
+    @PutMapping
+    public ApiResponse<ProductResponseDTO.AddProductResponseDto> editProduct(
+            @Valid @RequestPart ProductRequestDTO.EditProductDto request,
+            @RequestPart(required = false) MultipartFile[] files) {
+        return ApiResponse.onSuccess(productService.editProduct(request, files));
+    }
+
     @DeleteMapping
     public ApiResponse<String> deleteProduct(@Valid @RequestBody ProductRequestDTO.DeleteProductDto request) {
         productService.deleteProduct(request);

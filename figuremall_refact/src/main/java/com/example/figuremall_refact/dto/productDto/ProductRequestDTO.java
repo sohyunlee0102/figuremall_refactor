@@ -71,14 +71,45 @@ public class ProductRequestDTO {
     @AllArgsConstructor
     public static class EditProductDto {
 
-        @NotBlank
-        String name;
         @NotNull
+        Long productId;
+        String name;
         Integer price;
         String description;
-        @NotNull
-        List<ProductOptionDTO> options;
+        List<EditProductOptionDTO> options;
+        List<EditProductImageDTO> images;
+        List<Long> deleteImageIds;
 
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EditProductImageDTO {
+        Long imageId;
+        Boolean isMain;
+        Integer index;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EditProductOptionDTO {
+        @NotNull
+        Long optionId;
+        String optionName;
+        List<EditProductOptionValueDTO> values;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EditProductOptionValueDTO {
+        @NotNull
+        Long valueId;
+        String valueName;
+        Long extraPrice;
+        Long stock;
     }
 
     @Getter
