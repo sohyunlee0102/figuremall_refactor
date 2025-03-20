@@ -8,10 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -27,6 +24,12 @@ public class ProductController {
             @RequestPart MultipartFile[] files,
             @RequestPart ProductRequestDTO.ImageInfoDto imageInfo) {
         return ApiResponse.onSuccess(productService.addProduct(request, files, imageInfo));
+    }
+
+    @DeleteMapping
+    public ApiResponse<String> deleteProduct(@Valid @RequestBody ProductRequestDTO.DeleteProductDto request) {
+        productService.deleteProduct(request);
+        return ApiResponse.onSuccess("상품이 삭제되었습니다.");
     }
 
 }

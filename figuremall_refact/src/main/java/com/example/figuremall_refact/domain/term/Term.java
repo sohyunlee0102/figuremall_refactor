@@ -1,7 +1,6 @@
-package com.example.figuremall_refact.domain.terms;
+package com.example.figuremall_refact.domain.term;
 
 import com.example.figuremall_refact.domain.common.BaseEntity;
-import com.example.figuremall_refact.domain.user.UserAgreements;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -18,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @DynamicUpdate
 @DynamicInsert
-public class Terms extends BaseEntity {
+public class Term extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ public class Terms extends BaseEntity {
     private Float version;
 
     @Column(nullable = false)
-    private String optional;
+    private Boolean isOptional;
 
     @OneToMany(mappedBy = "terms", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UserAgreements> agreements =  new ArrayList<>();

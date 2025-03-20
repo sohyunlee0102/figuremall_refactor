@@ -43,4 +43,9 @@ public class ProductService {
         return new ProductResponseDTO.AddProductResponseDto(savedProduct.getId());
     }
 
+    @Transactional
+    public void deleteProduct(ProductRequestDTO.DeleteProductDto request) {
+        productRepository.deleteById(request.getProductId());
+    }
+
 }

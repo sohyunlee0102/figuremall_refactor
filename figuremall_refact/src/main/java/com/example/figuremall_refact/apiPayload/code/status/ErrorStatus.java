@@ -52,12 +52,13 @@ public enum ErrorStatus implements BaseErrorCode {
     // 상품 카테고리 관련 에러
     CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "CATEGORY4001", "존재하지 않는 카테고리 ID 입니다."),
 
+    // 약관 관련 에러
+    TERM_NOT_FOUND(HttpStatus.BAD_REQUEST, "TERM4001", "존재하지 않는 약관 ID 입니다."),
+
     // 장바구니 관련 에러
     CART_NOT_FOUND(HttpStatus.BAD_REQUEST,"CART4001","존재하지 않는 장바구니 ID 입니다."),
     CART_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"CART4002","이미 존재하는 장바구니입니다."),
-
     CART_ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST,"CART4003","존재하지 않는 장바구니 상품 ID 입니다."),
-    //emotionNote(하루 일들) 관련 에러
     CART_ITEM_OPTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"CART4004","존재하지 않는 장바구니 상품 옵션 ID 입니다.");
 
 

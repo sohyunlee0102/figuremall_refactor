@@ -66,4 +66,29 @@ public class ProductRequestDTO {
         Boolean isMain; // 메인 이미지 여부
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EditProductDto {
+
+        @NotBlank
+        String name;
+        @NotNull
+        Integer price;
+        String description;
+        @NotNull
+        List<ProductOptionDTO> options;
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DeleteProductDto {
+
+        @NotNull
+        Long productId;
+
+    }
+
 }

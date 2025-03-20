@@ -1,7 +1,7 @@
-package com.example.figuremall_refact.domain.user;
+package com.example.figuremall_refact.domain.term;
 
 import com.example.figuremall_refact.domain.common.BaseEntity;
-import com.example.figuremall_refact.domain.terms.Terms;
+import com.example.figuremall_refact.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -27,6 +27,6 @@ public class UserAgreements extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private Terms terms;
+    private Term term;
 
 }
