@@ -33,10 +33,6 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private Integer totalPrice;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private OrderStatus orderStatus;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 

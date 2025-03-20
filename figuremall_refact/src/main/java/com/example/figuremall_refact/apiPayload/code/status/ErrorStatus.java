@@ -60,7 +60,12 @@ public enum ErrorStatus implements BaseErrorCode {
     CART_NOT_FOUND(HttpStatus.BAD_REQUEST,"CART4001","존재하지 않는 장바구니 ID 입니다."),
     CART_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"CART4002","이미 존재하는 장바구니입니다."),
     CART_ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST,"CART4003","존재하지 않는 장바구니 상품 ID 입니다."),
-    CART_ITEM_OPTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"CART4004","존재하지 않는 장바구니 상품 옵션 ID 입니다.");
+    CART_ITEM_OPTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"CART4004","존재하지 않는 장바구니 상품 옵션 ID 입니다."),
+
+    // 주문 관련 에러
+    ORDER_NOT_FOUND(HttpStatus.BAD_REQUEST,"ORDER4001","존재하지 않는 주문 ID 입니다."),
+    ORDER_ITEM_NOT_FOUND(HttpStatus.BAD_REQUEST,"ORDER4002","존재하지 않는 주문 상품 ID 입니다."),
+    ORDER_ITEM_OPTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"ORDER4003","존재하지 않는 주문 상품 옵션 ID 입니다.");
 
 
 

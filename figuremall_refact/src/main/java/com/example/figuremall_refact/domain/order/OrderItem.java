@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.domain.order;
 
 import com.example.figuremall_refact.domain.common.BaseEntity;
+import com.example.figuremall_refact.domain.enums.OrderStatus;
 import com.example.figuremall_refact.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,6 +38,10 @@ public class OrderItem extends BaseEntity {
 
     @Column(nullable = false)
     private Integer price;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItemOption> orderItemOptions = new ArrayList<>();
