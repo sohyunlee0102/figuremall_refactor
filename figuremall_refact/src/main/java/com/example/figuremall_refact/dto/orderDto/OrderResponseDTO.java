@@ -15,4 +15,12 @@ public class OrderResponseDTO {
         Long orderId;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderItemResponseDto {
+        Long orderItemId;
+    }
+
 }

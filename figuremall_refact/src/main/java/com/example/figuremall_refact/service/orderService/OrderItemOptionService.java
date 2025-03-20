@@ -8,6 +8,7 @@ import com.example.figuremall_refact.domain.product.ProductOptionValue;
 import com.example.figuremall_refact.dto.orderDto.OrderRequestDTO;
 import com.example.figuremall_refact.repository.orderRepository.OrderItemOptionRepository;
 import com.example.figuremall_refact.service.productService.ProductOptionValueService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class OrderItemOptionService {
         return orderItemOptionRepository.findById(id).orElseThrow(() -> new OrderHandler(ErrorStatus.ORDER_ITEM_OPTION_NOT_FOUND));
     }
 
+    @Transactional
     public void createOrderItemOption(List<OrderRequestDTO.CreateOrderItemOptionDto> requestList, OrderItem orderItem) {
         List<OrderItemOption> options = new ArrayList<>();
 

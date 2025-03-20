@@ -7,8 +7,10 @@ import com.example.figuremall_refact.domain.order.Order;
 import com.example.figuremall_refact.domain.order.OrderItem;
 import com.example.figuremall_refact.domain.product.Product;
 import com.example.figuremall_refact.dto.orderDto.OrderRequestDTO;
+import com.example.figuremall_refact.dto.orderDto.OrderResponseDTO;
 import com.example.figuremall_refact.repository.orderRepository.OrderItemRepository;
 import com.example.figuremall_refact.service.productService.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ public class OrderItemService {
         return orderItemRepository.findById(id).orElseThrow(() -> new OrderHandler(ErrorStatus.ORDER_ITEM_NOT_FOUND));
     }
 
+    @Transactional
     public void createOrderItem(List<OrderRequestDTO.CreateOrderItemDto> requestList, Order order) {
         for (OrderRequestDTO.CreateOrderItemDto request : requestList) {
             Product product = productService.findProductById(request.getProductId());
@@ -42,6 +45,14 @@ public class OrderItemService {
             orderItemRepository.save(orderItem);
             orderItemOptionService.createOrderItemOption(request.getOptions(), orderItem);
         }
+    }
+
+    @Transactional
+    public OrderResponseDTO.OrderItemResponseDto updateOrderItemStatus(OrderRequestDTO.UpdateOrderItemStatusDto request) {
+        OrderItem orderItem = findById(request.getOrderItemId());
+        orderItem.setOrderStatus(request.getStatus());
+
+        return new OrderResponseDTO.OrderItemResponseDto(orderItem.getId());
     }
 
 }

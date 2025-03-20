@@ -1,5 +1,6 @@
 package com.example.figuremall_refact.dto.orderDto;
 
+import com.example.figuremall_refact.domain.enums.OrderStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +45,18 @@ public class OrderRequestDTO {
 
         @NotNull
         Long productOptionValueId;
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateOrderItemStatusDto {
+
+        @NotNull
+        Long orderItemId;
+        @NotNull
+        OrderStatus status;
 
     }
 
