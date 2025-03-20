@@ -30,7 +30,7 @@ public class CartService {
     public Cart createCart(User user) {
         Optional<Cart> existingCart = findByUser(user);
         if (existingCart.isPresent()) {
-            throw new CartHandler(ErrorStatus.CART_ALREADY_EXISTS);
+            return findById(existingCart.get().getId());
         }
 
         Cart cart = Cart.builder()

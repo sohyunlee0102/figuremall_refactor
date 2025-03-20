@@ -34,7 +34,7 @@ public class CartItemService {
     public CartResponseDTO.AddCartItemResponseDto addCartItem(CartRequestDTO.AddCartItemDto request, String email) {
         Product product = productService.findProductById(request.getProductId());
         User user = userService.findByEmail(email);
-        Cart cart = cartService.findByUser(user).orElseThrow(() -> new CartHandler(ErrorStatus.CART_NOT_FOUND));
+        Cart cart = cartService.createCart(user);
 
         CartItem cartItem = CartItem.builder()
                 .product(product)
