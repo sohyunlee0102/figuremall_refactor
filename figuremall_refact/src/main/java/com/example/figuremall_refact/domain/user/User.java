@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.domain.user;
 
 import com.example.figuremall_refact.domain.cart.Cart;
+import com.example.figuremall_refact.domain.comment.Comment;
 import com.example.figuremall_refact.domain.common.BaseEntity;
 import com.example.figuremall_refact.domain.enums.Gender;
 import com.example.figuremall_refact.domain.enums.Role;
@@ -8,6 +9,9 @@ import com.example.figuremall_refact.domain.enums.Status;
 import com.example.figuremall_refact.domain.inquiry.Inquiry;
 import com.example.figuremall_refact.domain.listener.UserEntityListener;
 import com.example.figuremall_refact.domain.order.Order;
+import com.example.figuremall_refact.domain.post.Like;
+import com.example.figuremall_refact.domain.product.ProductImage;
+import com.example.figuremall_refact.domain.report.Report;
 import com.example.figuremall_refact.domain.review.Review;
 import com.example.figuremall_refact.domain.term.UserAgreement;
 import com.example.figuremall_refact.domain.wishlist.Wishlist;
@@ -94,6 +98,15 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UserAgreement> agreements =  new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Like> likes = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Comment comment;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Report> reports = new ArrayList<>();
 
     public void encodePassword(String password) { this.password = password; }
 

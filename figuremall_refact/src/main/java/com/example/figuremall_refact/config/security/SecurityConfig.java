@@ -46,7 +46,9 @@ public class SecurityConfig {
                         .requestMatchers("/", "/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // 스웨거 api
-                        .requestMatchers("/users/**", "/products/**").hasRole("USER")
+                        .requestMatchers("/users/**", "/products/**", "/reviews/**", "/address/**", "/inquiries/**",
+                                "/wishlists/**", "/orders/**", "/carts/**", "/categories/**", "/terms/**",
+                                "/userAgreements/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
