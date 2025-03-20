@@ -9,7 +9,7 @@ import com.example.figuremall_refact.domain.inquiry.Inquiry;
 import com.example.figuremall_refact.domain.listener.UserEntityListener;
 import com.example.figuremall_refact.domain.order.Order;
 import com.example.figuremall_refact.domain.review.Review;
-import com.example.figuremall_refact.domain.term.UserAgreements;
+import com.example.figuremall_refact.domain.term.UserAgreement;
 import com.example.figuremall_refact.domain.wishlist.Wishlist;
 import jakarta.persistence.*;
 import lombok.*;
@@ -93,7 +93,7 @@ public class User extends BaseEntity {
     private UserAddress address;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<UserAgreements> agreements =  new ArrayList<>();
+    private List<UserAgreement> agreements =  new ArrayList<>();
 
     public void encodePassword(String password) { this.password = password; }
 

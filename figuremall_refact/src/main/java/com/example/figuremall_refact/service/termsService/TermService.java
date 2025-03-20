@@ -32,4 +32,32 @@ public class TermService {
         return new TermResponseDTO.CreateTermResponseDto(termRepository.save(term).getId());
     }
 
+    @Transactional
+    public TermResponseDTO.CreateTermResponseDto updateTerm(TermRequestDTO.UpdateTermDto request) {
+        Term term = findById(request.getTermId());
+
+        if (request.getTitle() != null) {
+            term.setTitle(request.getTitle());
+        }
+
+        if (request.getContent() != null) {
+            term.setContent(request.getContent());
+        }
+
+        if (request.getVersion() != null) {
+            term.setVersion(request.getVersion());
+        }
+
+        if (request.getIsOptional() != null) {
+            term.setIsOptional(request.getIsOptional());
+        }
+
+        return new TermResponseDTO.CreateTermResponseDto(term.getId());
+    }
+
+    @Transactional
+    public void deleteTerm(TermRequestDTO.DeleteTermDto request) {
+        termRepository.delete(findById(request.getTermId()));
+    }
+
 }

@@ -53,7 +53,8 @@ public enum ErrorStatus implements BaseErrorCode {
     CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "CATEGORY4001", "존재하지 않는 카테고리 ID 입니다."),
 
     // 약관 관련 에러
-    TERM_NOT_FOUND(HttpStatus.BAD_REQUEST, "TERM4001", "존재하지 않는 약관 ID 입니다."),
+    TERM_NOT_FOUND(HttpStatus.BAD_REQUEST, "TERM4001", "존재하지 않는 이용약관 ID 입니다."),
+    USER_AGREEMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "AGREEMENT4001", "존재하지 않는 약관 동의 기록 ID 입니다."),
 
     // 장바구니 관련 에러
     CART_NOT_FOUND(HttpStatus.BAD_REQUEST,"CART4001","존재하지 않는 장바구니 ID 입니다."),

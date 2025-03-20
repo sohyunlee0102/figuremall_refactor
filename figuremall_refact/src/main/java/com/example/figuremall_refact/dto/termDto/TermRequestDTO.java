@@ -27,4 +27,28 @@ public class TermRequestDTO {
 
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateTermDto {
+
+        @NotNull
+        Long termId;
+        String title;
+        String content;
+        Float version;
+        Boolean isOptional;
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DeleteTermDto {
+
+        @NotNull
+        Long termId;
+
+    }
+
 }
