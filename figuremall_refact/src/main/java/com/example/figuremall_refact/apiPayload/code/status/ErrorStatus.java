@@ -73,7 +73,10 @@ public enum ErrorStatus implements BaseErrorCode {
     DATA_NUMBER_NOT_SAME(HttpStatus.BAD_REQUEST,"POST4004","파일 개수와 요청 데이터 개수가 일치하지 않습니다."),
 
     // 댓글 관련 에러
-    COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST,"COMMENT4001","존재하지 않는 댓글 ID 입니다.");
+    COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST,"COMMENT4001","존재하지 않는 댓글 ID 입니다."),
+
+    // 신고 관련 에러
+    REPORT_NOT_FOUND(HttpStatus.BAD_REQUEST,"REPORT4001","존재하지 않는 신고 ID 입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
