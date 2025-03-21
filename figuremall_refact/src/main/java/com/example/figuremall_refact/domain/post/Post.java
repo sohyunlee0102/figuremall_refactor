@@ -4,6 +4,7 @@ import com.example.figuremall_refact.domain.comment.Comment;
 import com.example.figuremall_refact.domain.common.BaseEntity;
 import com.example.figuremall_refact.domain.enums.PostCategory;
 import com.example.figuremall_refact.domain.report.Report;
+import com.example.figuremall_refact.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -50,5 +51,8 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Report> reports = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
 }

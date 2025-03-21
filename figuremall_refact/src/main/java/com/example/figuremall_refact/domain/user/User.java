@@ -10,6 +10,7 @@ import com.example.figuremall_refact.domain.inquiry.Inquiry;
 import com.example.figuremall_refact.domain.listener.UserEntityListener;
 import com.example.figuremall_refact.domain.order.Order;
 import com.example.figuremall_refact.domain.post.Like;
+import com.example.figuremall_refact.domain.post.Post;
 import com.example.figuremall_refact.domain.product.ProductImage;
 import com.example.figuremall_refact.domain.report.Report;
 import com.example.figuremall_refact.domain.review.Review;
@@ -107,6 +108,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Post> posts = new ArrayList<>();
 
     public void encodePassword(String password) { this.password = password; }
 
