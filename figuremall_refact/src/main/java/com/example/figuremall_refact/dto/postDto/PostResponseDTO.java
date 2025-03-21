@@ -15,4 +15,12 @@ public class PostResponseDTO {
         Long postId;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LikeResponseDto {
+        Long likeId;
+    }
+
 }

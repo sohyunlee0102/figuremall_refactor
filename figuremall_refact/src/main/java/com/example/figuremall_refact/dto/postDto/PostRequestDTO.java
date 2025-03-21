@@ -66,5 +66,24 @@ public class PostRequestDTO {
 
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddLikeDto {
+
+        @NotNull
+        Long postId;
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DeleteLikeDto {
+
+        @NotNull
+        Long likeId;
+
+    }
 
 }
