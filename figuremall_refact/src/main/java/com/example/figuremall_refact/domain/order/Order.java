@@ -2,6 +2,7 @@ package com.example.figuremall_refact.domain.order;
 
 import com.example.figuremall_refact.domain.common.BaseEntity;
 import com.example.figuremall_refact.domain.enums.OrderStatus;
+import com.example.figuremall_refact.domain.payment.Payment;
 import com.example.figuremall_refact.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,5 +36,9 @@ public class Order extends BaseEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private Payment payment;
 
 }
