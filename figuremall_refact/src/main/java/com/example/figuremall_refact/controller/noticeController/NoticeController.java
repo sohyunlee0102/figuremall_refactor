@@ -30,6 +30,7 @@ public class NoticeController {
 
     @DeleteMapping
     ApiResponse<String> deleteNotice(@Valid @RequestBody NoticeRequestDTO.DeleteNoticeDTO request) {
+        noticeService.deleteNotice(request);
         return ApiResponse.onSuccess("공지가 삭제되었습니다.");
     }
 

@@ -52,8 +52,8 @@ public class NoticeService {
     }
 
     @Transactional
-    public void DeleteNotice(Long noticeId) {
-        noticeRepository.deleteById(noticeId);
+    public void deleteNotice(NoticeRequestDTO.DeleteNoticeDTO request) {
+        noticeRepository.deleteById(request.getNoticeId());
     }
 
 }
