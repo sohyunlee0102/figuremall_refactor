@@ -81,6 +81,15 @@ public enum ErrorStatus implements BaseErrorCode {
     // 공지 관련 에러
     NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST,"NOTICE4001","존재하지 않는 공지 ID 입니다."),
 
+    // 모임 관련 에러
+    MEETING_NOT_FOUND(HttpStatus.BAD_REQUEST,"MEETING4001","존재하지 않는 모임 ID 입니다."),
+    MEETING_PARTICIPANT_NOT_FOUND(HttpStatus.BAD_REQUEST,"MEETING4002","존재하지 않는 모임 참가자 ID 입니다."),
+    AVAILABLE_TIME_NOT_FOUND(HttpStatus.BAD_REQUEST,"MEETING4003","존재하지 않는 모임 가능 시간 ID 입니다."),
+
+    // 빙상장 관련 에러
+    ICE_RINK_NOT_FOUND(HttpStatus.BAD_REQUEST,"ICE_RINK4001","존재하지 않는 빙상장 ID 입니다."),
+    ICE_RINK_SELECTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"ICE_RINK4002","존재하지 않는 빙상장 선택 ID 입니다."),
+
     // 결제 관련 에러
     PAYMENT_NOT_FOUND(HttpStatus.BAD_REQUEST,"PAYMENT4001","존재하지 않는 결제 ID 입니다."),
     TRANSACTION_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"PAYMENT4002","이미 존재하는 거래 ID 입니다.");

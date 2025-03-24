@@ -8,6 +8,8 @@ import com.example.figuremall_refact.domain.enums.Role;
 import com.example.figuremall_refact.domain.enums.Status;
 import com.example.figuremall_refact.domain.inquiry.Inquiry;
 import com.example.figuremall_refact.domain.listener.UserEntityListener;
+import com.example.figuremall_refact.domain.meeting.AvailableTime;
+import com.example.figuremall_refact.domain.meeting.Meeting;
 import com.example.figuremall_refact.domain.notice.Notice;
 import com.example.figuremall_refact.domain.order.Order;
 import com.example.figuremall_refact.domain.post.Like;
@@ -115,6 +117,12 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Meeting> meetings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<AvailableTime> availableTimes = new ArrayList<>();
 
     public void encodePassword(String password) { this.password = password; }
 
