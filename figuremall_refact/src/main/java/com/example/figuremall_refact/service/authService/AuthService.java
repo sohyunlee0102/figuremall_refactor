@@ -54,6 +54,10 @@ public class AuthService {
 
         String storedRefreshToken = redisOps.get(request.getEmail());
 
+        if (redisOps.getOperations().hasKey("BLACKLIST" + request.getRefreshToken())) {
+            throw new AuthHandler(ErrorStatus.INVALID_TOKEN);
+        }
+
         if (storedRefreshToken == null || !storedRefreshToken.equals(request.getRefreshToken())) {
             throw new AuthHandler(ErrorStatus.INVALID_TOKEN);
         }
@@ -71,11 +75,17 @@ public class AuthService {
     public void logout(String email, String accessToken) {
         System.out.println("email: " + email);
         System.out.println("accessToken: " + accessToken);
-        redisOps.getOperations().delete(email);
-        System.out.println("Deleted");
-        long expiration = jwtTokenUtil.getExpiration(accessToken);
-        System.out.println("expiration: " + expiration);
-        redisOps.getOperations().opsForValue().set("BLACKLIST" + accessToken, "logout", expiration, TimeUnit.SECONDS);
+
+        String refreshToken = redisOps.getOperations().opsForValue().get(email);
+        if (refreshToken != null) {
+            redisOps.getOperations().delete(email);
+
+            long refreshExpiration = jwtTokenUtil.getExpiration(refreshToken);
+            redisOps.getOperations().opsForValue().set("BLACKLIST" + refreshToken, "logout", refreshExpiration, TimeUnit.SECONDS);
+        }
+
+        long accessExpiration = jwtTokenUtil.getExpiration(accessToken);
+        redisOps.getOperations().opsForValue().set("BLACKLIST" + accessToken, "logout", accessExpiration, TimeUnit.SECONDS);
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.figuremall_refact.service.userService;
 import com.example.figuremall_refact.apiPayload.code.status.ErrorStatus;
 import com.example.figuremall_refact.apiPayload.exception.handler.UserAddressHandler;
 import com.example.figuremall_refact.apiPayload.exception.handler.UserHandler;
+import com.example.figuremall_refact.config.jwt.JwtTokenUtil;
 import com.example.figuremall_refact.domain.cart.Cart;
 import com.example.figuremall_refact.domain.enums.Role;
 import com.example.figuremall_refact.domain.enums.Status;
@@ -18,6 +19,7 @@ import com.example.figuremall_refact.service.s3Service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +42,8 @@ public class UserService {
     private final S3Service s3Service;
     private final UserAddressRepository userAddressRepository;
     private final CartService cartService;
+    private final ValueOperations<String, String> redisOps;
+    private final JwtTokenUtil jwtTokenUtil;
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
@@ -88,10 +93,21 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(String email) {
+    public void deleteUser(String email, String accessToken) {
         User user = findByEmail(email);
 
-        stringRedisTemplate.delete(user.getEmail());
+        String refreshToken = redisOps.get(email);
+        if (refreshToken != null) {
+            redisOps.getOperations().delete(email);
+
+            long expiration = jwtTokenUtil.getExpiration(refreshToken);
+            redisOps.getOperations().opsForValue().set("BLACKLIST" + refreshToken, "logout", expiration, TimeUnit.SECONDS);
+        }
+
+        if (accessToken != null) {
+            long expiration = jwtTokenUtil.getExpiration(accessToken);
+            redisOps.getOperations().opsForValue().set("BLACKLIST" + accessToken, "logout", expiration, TimeUnit.SECONDS);
+        }
 
         user.setStatus(Status.INACTIVE);
         user.setInactiveDate(LocalDate.now());

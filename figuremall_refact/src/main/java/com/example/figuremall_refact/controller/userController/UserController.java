@@ -30,4 +30,12 @@ public class UserController {
         return ApiResponse.onSuccess(userService.updateUser(request, userDetails.getUsername(), file));
     }
 
+    @DeleteMapping
+    public ApiResponse<String> deleteUser(@AuthenticationPrincipal UserDetails userDetails,
+                                          @RequestHeader("Authorization") String token) {
+        String accessToken = token.substring(7);
+        userService.deleteUser(userDetails.getUsername(), accessToken);
+        return ApiResponse.onSuccess("회원 탈퇴가 완료되었습니다.");
+    }
+
 }
