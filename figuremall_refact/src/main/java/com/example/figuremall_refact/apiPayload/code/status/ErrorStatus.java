@@ -81,6 +81,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 공지 관련 에러
     NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST,"NOTICE4001","존재하지 않는 공지 ID 입니다."),
 
+    // 배송 관련 에러
+    DELIVERY_NOT_FOUND(HttpStatus.BAD_REQUEST,"DELIVERY4001","존재하지 않는 배송 ID 입니다."),
+
     // 모임 관련 에러
     MEETING_NOT_FOUND(HttpStatus.BAD_REQUEST,"MEETING4001","존재하지 않는 모임 ID 입니다."),
     MEETING_PARTICIPANT_NOT_FOUND(HttpStatus.BAD_REQUEST,"MEETING4002","존재하지 않는 모임 참가자 ID 입니다."),

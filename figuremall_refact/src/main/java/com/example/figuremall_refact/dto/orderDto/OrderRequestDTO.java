@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.dto.orderDto;
 
 import com.example.figuremall_refact.domain.enums.OrderStatus;
+import com.example.figuremall_refact.dto.deliveryDto.DeliveryRequestDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,8 @@ public class OrderRequestDTO {
         Integer totalPrice;
         @NotNull
         List<CreateOrderItemDto> items;
+        @NotNull
+        DeliveryRequestDTO.CreateDeliveryDto delivery;
 
     }
 

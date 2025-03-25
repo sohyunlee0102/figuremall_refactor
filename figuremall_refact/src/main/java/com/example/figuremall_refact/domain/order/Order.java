@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.domain.order;
 
 import com.example.figuremall_refact.domain.common.BaseEntity;
+import com.example.figuremall_refact.domain.delivery.Delivery;
 import com.example.figuremall_refact.domain.enums.OrderStatus;
 import com.example.figuremall_refact.domain.payment.Payment;
 import com.example.figuremall_refact.domain.user.User;

@@ -35,7 +35,7 @@ public class OrderService {
                 .build();
 
         orderRepository.save(order);
-        orderItemService.createOrderItem(request.getItems(), order);
+        orderItemService.createOrderItem(request.getItems(), order, request.getDelivery());
 
         return new OrderResponseDTO.CreateOrderResponseDto(order.getId());
     }
