@@ -43,10 +43,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 안 함
                 .authorizeHttpRequests((requests) ->requests
                         .requestMatchers("/auth/logout").hasRole("USER")
-                        .requestMatchers("/", "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/products").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/products").hasRole("ADMIN")
+                        .requestMatchers("/", "/auth/**", "/products/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // 스웨거 api
-                        .requestMatchers("/users/**", "/products/**", "/reviews/**", "/address/**", "/inquiries/**",
+                        .requestMatchers("/users/**", "/reviews/**", "/address/**", "/inquiries/**",
                                 "/wishlists/**", "/orders/**", "/carts/**", "/categories/**", "/terms/**",
                                 "/userAgreements/**").hasRole("USER")
                         .anyRequest().authenticated()

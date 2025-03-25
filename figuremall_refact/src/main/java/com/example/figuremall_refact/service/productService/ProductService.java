@@ -1,15 +1,24 @@
 package com.example.figuremall_refact.service.productService;
 
 import com.example.figuremall_refact.domain.product.Product;
+import com.example.figuremall_refact.domain.product.ProductOption;
+import com.example.figuremall_refact.domain.product.ProductOptionValue;
+import com.example.figuremall_refact.domain.user.User;
 import com.example.figuremall_refact.dto.productDto.ProductRequestDTO;
 import com.example.figuremall_refact.dto.productDto.ProductResponseDTO;
 import com.example.figuremall_refact.repository.productRepository.ProductRepository;
 import com.example.figuremall_refact.service.s3Service.S3Service;
+import com.example.figuremall_refact.service.userService.UserService;
+import com.example.figuremall_refact.service.wishService.WishlistService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +28,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductOptionService productOptionService;
     private final ProductImageService productImageService;
+    private final UserService userService;
+    private final WishlistService wishlistService;
 
     public Product findProductById(Long id) {
         return productRepository.findById(id).orElse(null);
@@ -71,6 +82,57 @@ public class ProductService {
     @Transactional
     public void deleteProduct(ProductRequestDTO.DeleteProductDto request) {
         productRepository.deleteById(request.getProductId());
+    }
+
+    @Transactional
+    public Slice<ProductResponseDTO.HomeResponseDto> getHomeProducts(Pageable pageable, String email) {
+        Slice<Product> products = productRepository.findAllOrderByLikeCountDesc(pageable);
+        User user = (email != null) ? userService.findByEmail(email) : null;
+
+        return products.map(product -> {
+            String mainImageUrl = productImageService.getMainImage(product);
+            boolean isWishlisted = (user != null) && wishlistService.isWishlisted(user, product);
+
+            return new ProductResponseDTO.HomeResponseDto(product.getId(), product.getPrice(), product.getName(), product.getLikeCount(),
+                    isWishlisted, mainImageUrl);
+        });
+    }
+
+    @Transactional
+    public ProductResponseDTO.ProductDto getProduct(Long productId, String email) {
+        Product product = findProductById(productId);
+        User user = (email != null) ? userService.findByEmail(email) : null;
+        boolean isWishlisted = (user != null) && wishlistService.isWishlisted(user, product);
+
+        List <ProductOption> options = product.getOptions();
+        List <ProductResponseDTO.ProductOptionDto> productOptionDtos = new ArrayList<>();
+
+        for (ProductOption option : options) {
+            List<ProductResponseDTO.ProductOptionValueDto> optionValueDtos = new ArrayList<>();
+
+            for (ProductOptionValue optionValue : option.getValues()) {
+                optionValueDtos.add(
+                        new ProductResponseDTO.ProductOptionValueDto(optionValue.getId(), optionValue.getValueName(),
+                                optionValue.getExtraPrice(), optionValue.getIsSoldOut())
+                );
+            }
+
+            productOptionDtos.add(
+                    new ProductResponseDTO.ProductOptionDto(option, optionValueDtos)
+            );
+        }
+
+        return new ProductResponseDTO.ProductDto(
+                product.getId(),
+                product.getPrice(),
+                product.getRating(),
+                product.getName(),
+                product.getDescription(),
+                product.getCategory(),
+                isWishlisted,
+                product.getOptions(),
+                product.getImages()
+        );
     }
 
 }

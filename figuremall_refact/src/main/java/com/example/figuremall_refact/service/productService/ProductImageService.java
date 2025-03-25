@@ -131,4 +131,9 @@ public class ProductImageService {
         }
     }
 
+    @Transactional
+    public String getMainImage(Product product) {
+        return productImageRepository.findByProductAndIsMain(product, true).get().getImageUrl();
+    }
+
 }

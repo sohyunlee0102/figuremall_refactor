@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class WishlistService {
@@ -48,6 +50,11 @@ public class WishlistService {
         product.setLikeCount(product.getLikeCount() - 1);
 
         wishlistRepository.delete(wishlist);
+    }
+
+    @Transactional
+    public boolean isWishlisted(User user, Product product) {
+        return wishlistRepository.existsByUserAndProduct(user, product);
     }
 
 }
