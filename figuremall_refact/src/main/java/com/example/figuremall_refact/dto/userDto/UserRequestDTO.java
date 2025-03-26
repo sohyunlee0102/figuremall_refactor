@@ -88,10 +88,17 @@ public class UserRequestDTO {
     @Getter
     @Setter
     public static class UserAddressDTO {
-        private Long id;
-        private String address;
-        private String detail;
-        private Integer postalCode;
+        Long id;
+        String address;
+        String detail;
+        Integer postalCode;
+    }
+
+    @Getter
+    @Setter
+    public static class CheckEmailDuplicationDTO {
+        @NotBlank
+        String email;
     }
 
 }

@@ -50,6 +50,12 @@ public class UserService {
     }
 
     @Transactional
+    public void checkEmailDuplicate(UserRequestDTO.CheckEmailDuplicationDTO request) {
+        userRepository.findByEmail(request.getEmail()).ifPresent(user ->
+        { throw new UserHandler(ErrorStatus.EMAIL_ALREADY_EXISTS); });
+    }
+
+    @Transactional
     public UserResponseDTO.JoinResultDTO joinUser(UserRequestDTO.JoinDto request) {
         ListenerUtil.disableListener();
 
