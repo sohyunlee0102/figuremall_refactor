@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Slice<Product> findAllOrderByLikeCountDesc(Pageable pageable);
+    Slice<Product> findAllByOrderByLikeCountDesc(Pageable pageable);
 }

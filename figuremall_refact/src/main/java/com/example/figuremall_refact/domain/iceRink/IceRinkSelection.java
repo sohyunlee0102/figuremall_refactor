@@ -26,7 +26,7 @@ public class IceRinkSelection extends BaseEntity {
     private MeetingParticipant participant;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "ice_rink_id", nullable = false)
     private IceRink iceRink;
 
 }

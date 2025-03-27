@@ -24,7 +24,7 @@ public class IceRinkController {
         return ApiResponse.onSuccess(iceRinkService.createIceRink(request));
     }
 
-    @PostMapping
+    @PutMapping
     public ApiResponse<IceRinkResponseDTO> updateIceRink(@Valid @RequestBody IceRinkRequestDTO.UpdateIceRinkDto request) {
         return ApiResponse.onSuccess(iceRinkService.updateIceRink(request));
     }

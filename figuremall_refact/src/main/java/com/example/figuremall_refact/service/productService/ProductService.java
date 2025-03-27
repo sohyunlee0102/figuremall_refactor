@@ -7,6 +7,7 @@ import com.example.figuremall_refact.domain.user.User;
 import com.example.figuremall_refact.dto.productDto.ProductRequestDTO;
 import com.example.figuremall_refact.dto.productDto.ProductResponseDTO;
 import com.example.figuremall_refact.repository.productRepository.ProductRepository;
+import com.example.figuremall_refact.repository.wishlistRepository.WishlistRepository;
 import com.example.figuremall_refact.service.s3Service.S3Service;
 import com.example.figuremall_refact.service.userService.UserService;
 import com.example.figuremall_refact.service.wishService.WishlistService;
@@ -29,7 +30,7 @@ public class ProductService {
     private final ProductOptionService productOptionService;
     private final ProductImageService productImageService;
     private final UserService userService;
-    private final WishlistService wishlistService;
+    private final WishlistRepository wishlistRepository;
 
     public Product findProductById(Long id) {
         return productRepository.findById(id).orElse(null);
@@ -86,12 +87,12 @@ public class ProductService {
 
     @Transactional
     public Slice<ProductResponseDTO.HomeResponseDto> getHomeProducts(Pageable pageable, String email) {
-        Slice<Product> products = productRepository.findAllOrderByLikeCountDesc(pageable);
+        Slice<Product> products = productRepository.findAllByOrderByLikeCountDesc(pageable);
         User user = (email != null) ? userService.findByEmail(email) : null;
 
         return products.map(product -> {
             String mainImageUrl = productImageService.getMainImage(product);
-            boolean isWishlisted = (user != null) && wishlistService.isWishlisted(user, product);
+            boolean isWishlisted = (user != null) && wishlistRepository.existsByUserAndProduct(user, product);
 
             return new ProductResponseDTO.HomeResponseDto(product.getId(), product.getPrice(), product.getName(), product.getLikeCount(),
                     isWishlisted, mainImageUrl);
@@ -102,7 +103,7 @@ public class ProductService {
     public ProductResponseDTO.ProductDto getProduct(Long productId, String email) {
         Product product = findProductById(productId);
         User user = (email != null) ? userService.findByEmail(email) : null;
-        boolean isWishlisted = (user != null) && wishlistService.isWishlisted(user, product);
+        boolean isWishlisted = (user != null) && wishlistRepository.existsByUserAndProduct(user, product);
 
         List <ProductOption> options = product.getOptions();
         List <ProductResponseDTO.ProductOptionDto> productOptionDtos = new ArrayList<>();

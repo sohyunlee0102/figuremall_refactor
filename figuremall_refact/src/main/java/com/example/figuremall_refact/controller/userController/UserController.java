@@ -38,4 +38,9 @@ public class UserController {
         return ApiResponse.onSuccess("회원 탈퇴가 완료되었습니다.");
     }
 
+    @GetMapping("/{userId}")
+    public ApiResponse<UserResponseDTO.UserInfoResponseDto> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        return ApiResponse.onSuccess(userService.getUserInfo(userDetails.getUsername()));
+    }
+
 }

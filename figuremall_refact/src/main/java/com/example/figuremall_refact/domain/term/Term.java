@@ -36,7 +36,7 @@ public class Term extends BaseEntity {
     @Column(nullable = false)
     private Boolean isOptional;
 
-    @OneToMany(mappedBy = "terms", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UserAgreement> agreements =  new ArrayList<>();
 
 }

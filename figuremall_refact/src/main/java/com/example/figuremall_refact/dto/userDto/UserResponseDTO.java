@@ -1,9 +1,12 @@
 package com.example.figuremall_refact.dto.userDto;
 
+import com.example.figuremall_refact.domain.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 public class UserResponseDTO {
 
@@ -43,6 +46,20 @@ public class UserResponseDTO {
     @AllArgsConstructor
     public static class UpdateResponseDto {
         Long userId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserInfoResponseDto {
+        String username;
+        String email;
+        String phoneNum;
+        Gender gender;
+        Integer point;
+        LocalDate dateOfBirth;
+        String picture;
     }
 
 }

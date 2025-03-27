@@ -22,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @DynamicUpdate
 @DynamicInsert
+@Table(name = "comments")
 public class Comment extends BaseEntity {
 
     @Id

@@ -99,6 +99,14 @@ public class UserService {
     }
 
     @Transactional
+    public UserResponseDTO.UserInfoResponseDto getUserInfo(String email) {
+        User user = findByEmail(email);
+
+        return new UserResponseDTO.UserInfoResponseDto(user.getUsername(), user.getEmail(), user.getPhoneNum(),
+                user.getGender(), user.getPoint(), user.getDateOfBirth(), user.getPicture());
+    }
+
+    @Transactional
     public void deleteUser(String email, String accessToken) {
         User user = findByEmail(email);
 

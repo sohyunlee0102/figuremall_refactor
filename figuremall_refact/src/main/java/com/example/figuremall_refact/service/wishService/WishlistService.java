@@ -52,9 +52,4 @@ public class WishlistService {
         wishlistRepository.delete(wishlist);
     }
 
-    @Transactional
-    public boolean isWishlisted(User user, Product product) {
-        return wishlistRepository.existsByUserAndProduct(user, product);
-    }
-
 }

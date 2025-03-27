@@ -39,7 +39,7 @@ public class IceRink extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String phone;
 
-    @OneToMany(mappedBy = "ice_rink", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "iceRink", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IceRinkSelection> selections = new ArrayList<>();
 
 }
