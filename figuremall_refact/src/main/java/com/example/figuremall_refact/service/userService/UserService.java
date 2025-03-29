@@ -56,6 +56,12 @@ public class UserService {
     }
 
     @Transactional
+    public void checkUsernameDuplicate(UserRequestDTO.CheckUsernameDuplicationDTO request) {
+        userRepository.findByUsername(request.getUsername()).ifPresent(user ->
+        { throw new UserHandler(ErrorStatus.USERNAME_ALREADY_EXISTS); });
+    }
+
+    @Transactional
     public UserResponseDTO.JoinResultDTO joinUser(UserRequestDTO.JoinDto request) {
         ListenerUtil.disableListener();
 

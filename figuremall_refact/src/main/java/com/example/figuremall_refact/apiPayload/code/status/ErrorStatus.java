@@ -21,6 +21,7 @@ public enum ErrorStatus implements BaseErrorCode {
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "USER4003", "비밀번호가 일치하지 않습니다."),
     INACTIVE_USER(HttpStatus.UNAUTHORIZED, "USER4004", "비활성화 된 사용자입니다."),
     ADDRESS_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4005", "존재하지 않는 주소입니다."),
+    USERNAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "USER4006", "이미 존재하는 닉네임입니다."),
 
     //인증 관련 에러
     AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "AUTH4001", "이메일 또는 비밀번호가 일치하지 않습니다."),

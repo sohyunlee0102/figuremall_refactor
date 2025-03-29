@@ -43,4 +43,10 @@ public class AuthController {
         return ApiResponse.onSuccess("사용 가능한 이메일입니다.");
     }
 
+    @PostMapping("/username")
+    public ApiResponse<String> checkUsernameDuplicate(@Valid @RequestBody UserRequestDTO.CheckUsernameDuplicationDTO request) {
+        userService.checkUsernameDuplicate(request);
+        return ApiResponse.onSuccess("사용 가능한 닉네임입니다.");
+    }
+
 }

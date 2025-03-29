@@ -101,4 +101,11 @@ public class UserRequestDTO {
         String email;
     }
 
+    @Getter
+    @Setter
+    public static class CheckUsernameDuplicationDTO {
+        @NotBlank
+        String username;
+    }
+
 }
