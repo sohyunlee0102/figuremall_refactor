@@ -23,10 +23,8 @@ public class UserResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class LoginResponseDto {
-        String email;
-        String accessToken;
-        String refreshToken;
+    public static class AuthResponseDto {
+        String username;
     }
 
     @Builder

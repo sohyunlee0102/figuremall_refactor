@@ -5,11 +5,15 @@ import com.example.figuremall_refact.dto.userDto.UserRequestDTO;
 import com.example.figuremall_refact.dto.userDto.UserResponseDTO;
 import com.example.figuremall_refact.service.authService.AuthService;
 import com.example.figuremall_refact.service.userService.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,20 +24,20 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ApiResponse<UserResponseDTO.LoginResponseDto> login(@Valid @RequestBody UserRequestDTO.LoginDto request) {
-        return ApiResponse.onSuccess(authService.login(request));
+    public ApiResponse<?> login(@Valid @RequestBody UserRequestDTO.LoginDto request, HttpServletResponse response) {
+        return ApiResponse.onSuccess(authService.login(request, response));
     }
 
     @PostMapping("/refresh")
-    public ApiResponse<UserResponseDTO.LoginResponseDto> refreshToken(@Valid @RequestBody UserRequestDTO.RefreshTokenDTO request) {
-        return ApiResponse.onSuccess(authService.refreshAccessToken(request));
+    public ApiResponse<String> refreshToken(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request, HttpServletResponse response) {
+        authService.refreshAccessToken(request, response, userDetails.getUsername());
+        return ApiResponse.onSuccess("accessToken이 재발급되었습니다.");
     }
 
     @PostMapping("/logout")
     public ApiResponse<String> logout(@AuthenticationPrincipal UserDetails userDetails,
-                                      @RequestHeader("Authorization") String token) {
-        String accessToken = token.substring(7);
-        authService.logout(userDetails.getUsername(), accessToken);
+                                      HttpServletRequest request, HttpServletResponse response) {
+        authService.logout(request, response, userDetails.getUsername());
         return ApiResponse.onSuccess("로그아웃 되었습니다.");
     }
 
@@ -47,6 +51,11 @@ public class AuthController {
     public ApiResponse<String> checkUsernameDuplicate(@Valid @RequestBody UserRequestDTO.CheckUsernameDuplicationDTO request) {
         userService.checkUsernameDuplicate(request);
         return ApiResponse.onSuccess("사용 가능한 닉네임입니다.");
+    }
+
+    @GetMapping("/me")
+    public ApiResponse<UserResponseDTO.AuthResponseDto> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        return ApiResponse.onSuccess(authService.getUsername(userDetails.getUsername()));
     }
 
 }

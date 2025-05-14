@@ -33,25 +33,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String authorizationHeader = request.getHeader("Authorization");
-
+        String token = extractTokenFromCookies(request, "accessToken");
         String username = null;
-        String token = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7);
-
+        if (token != null) {
             try {
-                System.out.println(token);
                 if (Boolean.TRUE.equals(redisTemplate.hasKey("BLACKLIST" + token))) {
-                    System.out.println("TRUE");
                     throw new AuthHandler(ErrorStatus.INVALID_TOKEN);
                 }
-                System.out.println("FALSE");
 
                 Claims claims = JwtTokenUtil.validateToken(token);
                 username = claims.getSubject();
-                System.out.println(username);
             } catch (Exception e) {
                 System.out.println("Invalid JWT Token");
                 throw new AuthHandler(ErrorStatus.INVALID_TOKEN);
@@ -72,4 +64,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
 
     }
+
+    private String extractTokenFromCookies(HttpServletRequest request, String name) {
+        if (request.getCookies() != null) {
+            for (var cookie : request.getCookies()) {
+                if (cookie.getName().equals(name)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
 }
