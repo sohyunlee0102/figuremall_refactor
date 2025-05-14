@@ -43,8 +43,8 @@ public class AuthService {
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
 
-            String accessToken = jwtTokenUtil.generateAccessToken(request.getEmail(), userService);
-            String refreshToken = jwtTokenUtil.generateRefreshToken(request.getEmail(), userService);
+            String accessToken = jwtTokenUtil.generateAccessToken(request.getEmail());
+            String refreshToken = jwtTokenUtil.generateRefreshToken(request.getEmail());
 
             redisOps.set(request.getEmail(), refreshToken, 7, TimeUnit.DAYS);
 
@@ -87,7 +87,7 @@ public class AuthService {
             throw new AuthHandler(ErrorStatus.INVALID_TOKEN);
         }
 
-        String newAccessToken = jwtTokenUtil.generateAccessToken(email, userService);
+        String newAccessToken = jwtTokenUtil.generateAccessToken(email);
 
         ResponseCookie accessCookie = ResponseCookie.from("accessToken", newAccessToken)
                 .httpOnly(true)
@@ -136,8 +136,8 @@ public class AuthService {
     }
 
     @Transactional
-    public UserResponseDTO.AuthResponseDto getUsername(String email) {
-        return new UserResponseDTO.AuthResponseDto(userRepository.findUsernameByEmail(email).getUsername());
+    public String getUsername(String email) {
+        return userRepository.findUsernameByEmail(email).getUsername();
     }
 
     private String extractTokenFromCookies(HttpServletRequest request, String name) {

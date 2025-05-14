@@ -30,9 +30,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UserHandler(ErrorStatus.INACTIVE_USER);
         }
 
+        String password = (user.getPassword() != null) ? user.getPassword() : "N/A";
+
         return User
                 .withUsername(user.getEmail())
-                .password(user.getPassword())
+                .password(password)
                 .roles(user.getRole().name())
                 .build();
     }

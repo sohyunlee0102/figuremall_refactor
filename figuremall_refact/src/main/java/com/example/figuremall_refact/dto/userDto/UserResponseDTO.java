@@ -23,14 +23,6 @@ public class UserResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class AuthResponseDto {
-        String username;
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class AddAddressResponseDto {
         Long addressId;
         String address;

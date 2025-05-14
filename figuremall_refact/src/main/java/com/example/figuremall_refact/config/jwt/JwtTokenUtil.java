@@ -4,10 +4,12 @@ import com.example.figuremall_refact.apiPayload.code.status.ErrorStatus;
 import com.example.figuremall_refact.apiPayload.exception.handler.AuthHandler;
 import com.example.figuremall_refact.apiPayload.exception.handler.UserHandler;
 import com.example.figuremall_refact.domain.user.User;
+import com.example.figuremall_refact.repository.userRepository.UserRepository;
 import com.example.figuremall_refact.service.userService.UserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +19,12 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenUtil {
 
     private static final long ACCESS_TOKEN_EXPIRATION = 1000 * 60 * 30; // 30분
     private static final long REFRESH_TOKEN_EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7일
+    private final UserRepository userRepository;
 
     @Value("${spring.jwt.secret-key}")
     private String secretKey;
@@ -32,9 +36,9 @@ public class JwtTokenUtil {
     }
 
     // AccessToken 생성
-    public static String generateAccessToken(String email, UserService userService) {
+    public String generateAccessToken(String email) {
 
-        User user = userService.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         if (user == null) {
             throw new UserHandler(ErrorStatus.USER_NOT_FOUND);
@@ -50,9 +54,9 @@ public class JwtTokenUtil {
     }
 
     // RefreshToken 생성
-    public static String generateRefreshToken(String email, UserService userService) {
+    public String generateRefreshToken(String email) {
 
-        User user = userService.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserHandler(ErrorStatus.USER_NOT_FOUND));
 
         if (user == null) {
             throw new UserHandler(ErrorStatus.USER_NOT_FOUND);

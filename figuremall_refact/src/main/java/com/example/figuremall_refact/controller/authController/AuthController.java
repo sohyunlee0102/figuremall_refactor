@@ -47,15 +47,16 @@ public class AuthController {
         return ApiResponse.onSuccess("사용 가능한 이메일입니다.");
     }
 
-    @PostMapping("/username")
-    public ApiResponse<String> checkUsernameDuplicate(@Valid @RequestBody UserRequestDTO.CheckUsernameDuplicationDTO request) {
-        userService.checkUsernameDuplicate(request);
-        return ApiResponse.onSuccess("사용 가능한 닉네임입니다.");
-    }
-
     @GetMapping("/me")
-    public ApiResponse<UserResponseDTO.AuthResponseDto> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
-        return ApiResponse.onSuccess(authService.getUsername(userDetails.getUsername()));
+    public ApiResponse<?> getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ApiResponse.onSuccess(Map.of("authenticated", false, "message", "로그인 상태가 아닙니다."));
+        }
+
+        return ApiResponse.onSuccess(Map.of(
+                "authenticated", true,
+                "username", authService.getUsername(userDetails.getUsername())
+        ));
     }
 
 }
