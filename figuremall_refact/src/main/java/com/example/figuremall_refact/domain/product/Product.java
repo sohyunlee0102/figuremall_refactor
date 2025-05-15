@@ -67,7 +67,7 @@ public class Product extends BaseEntity {
     private List<Review> reviews = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Discount discount;
 
 }

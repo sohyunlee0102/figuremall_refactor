@@ -2,7 +2,6 @@ package com.example.figuremall_refact.controller.authController;
 
 import com.example.figuremall_refact.apiPayload.ApiResponse;
 import com.example.figuremall_refact.dto.userDto.UserRequestDTO;
-import com.example.figuremall_refact.dto.userDto.UserResponseDTO;
 import com.example.figuremall_refact.service.authService.AuthService;
 import com.example.figuremall_refact.service.userService.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,7 +54,7 @@ public class AuthController {
 
         return ApiResponse.onSuccess(Map.of(
                 "authenticated", true,
-                "username", authService.getUsername(userDetails.getUsername())
+                "data", authService.getUserInfo(userDetails.getUsername())
         ));
     }
 

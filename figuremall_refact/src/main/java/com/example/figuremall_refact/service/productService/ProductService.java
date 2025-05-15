@@ -4,23 +4,24 @@ import com.example.figuremall_refact.domain.product.Product;
 import com.example.figuremall_refact.domain.product.ProductOption;
 import com.example.figuremall_refact.domain.product.ProductOptionValue;
 import com.example.figuremall_refact.domain.user.User;
+import com.example.figuremall_refact.dto.productDto.ProductListResponse;
 import com.example.figuremall_refact.dto.productDto.ProductRequestDTO;
 import com.example.figuremall_refact.dto.productDto.ProductResponseDTO;
 import com.example.figuremall_refact.repository.productRepository.ProductRepository;
 import com.example.figuremall_refact.repository.wishlistRepository.WishlistRepository;
-import com.example.figuremall_refact.service.s3Service.S3Service;
 import com.example.figuremall_refact.service.userService.UserService;
-import com.example.figuremall_refact.service.wishService.WishlistService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,17 +87,18 @@ public class ProductService {
     }
 
     @Transactional
-    public Slice<ProductResponseDTO.HomeResponseDto> getHomeProducts(Pageable pageable, String email) {
-        Slice<Product> products = productRepository.findAllByOrderByLikeCountDesc(pageable);
+    public List<ProductResponseDTO.HomeResponseDto> getHomeProducts(String email) {
+        List<Product> products = productRepository.findTop7ByOrderByLikeCountDesc();
         User user = (email != null) ? userService.findByEmail(email) : null;
 
-        return products.map(product -> {
+        return products.stream().map(product -> {
             String mainImageUrl = productImageService.getMainImage(product);
             boolean isWishlisted = (user != null) && wishlistRepository.existsByUserAndProduct(user, product);
 
             return new ProductResponseDTO.HomeResponseDto(product.getId(), product.getPrice(), product.getName(), product.getLikeCount(),
                     isWishlisted, mainImageUrl);
-        });
+        })
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -134,6 +136,29 @@ public class ProductService {
                 product.getOptions(),
                 product.getImages()
         );
+    }
+
+    @Transactional
+    public ProductListResponse getProducts(String search, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Product> productPage;
+
+        if (search == null || search.trim().isEmpty()) {
+            productPage = productRepository.findAll(pageable);
+        } else {
+            productPage = productRepository.findByNameContainingIgnoreCase(search, pageable);
+        }
+
+        List<ProductResponseDTO.ProductListDto> dtos = productPage
+                .stream()
+                .map(product -> new ProductResponseDTO.ProductListDto(
+                        product.getId(),
+                        product.getName(),
+                        product.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+
+        return new ProductListResponse(dtos, productPage.getTotalPages());
     }
 
 }

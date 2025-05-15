@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.config.security;
 
 import com.example.figuremall_refact.domain.enums.Gender;
+import com.example.figuremall_refact.domain.enums.Provider;
 import com.example.figuremall_refact.domain.enums.Role;
 import com.example.figuremall_refact.domain.enums.Status;
 import com.example.figuremall_refact.domain.user.User;
@@ -66,6 +67,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                             .username(name)
                             .status(Status.ACTIVE)
                             .point(0)
+                            .provider(Provider.valueOf(provider.toUpperCase()))
                             .role(Role.USER)
                             .build()
             );
@@ -74,6 +76,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         attributes.put("name", name);
         attributes.put("email", email);
         attributes.put("picture", picture);
+        attributes.put("provider", provider);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("USER")),

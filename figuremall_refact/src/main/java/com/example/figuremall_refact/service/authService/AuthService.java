@@ -3,6 +3,8 @@ package com.example.figuremall_refact.service.authService;
 import com.example.figuremall_refact.apiPayload.code.status.ErrorStatus;
 import com.example.figuremall_refact.apiPayload.exception.handler.AuthHandler;
 import com.example.figuremall_refact.config.jwt.JwtTokenUtil;
+import com.example.figuremall_refact.domain.enums.Role;
+import com.example.figuremall_refact.domain.user.User;
 import com.example.figuremall_refact.dto.userDto.UserRequestDTO;
 import com.example.figuremall_refact.dto.userDto.UserResponseDTO;
 import com.example.figuremall_refact.repository.userRepository.UserRepository;
@@ -23,7 +25,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -136,8 +137,9 @@ public class AuthService {
     }
 
     @Transactional
-    public String getUsername(String email) {
-        return userRepository.findUsernameByEmail(email).getUsername();
+    public UserResponseDTO.AuthResponseDto getUserInfo(String email) {
+        User user = userService.findByEmail(email);
+        return new UserResponseDTO.AuthResponseDto(user.getUsername(), user.getRole());
     }
 
     private String extractTokenFromCookies(HttpServletRequest request, String name) {

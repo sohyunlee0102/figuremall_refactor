@@ -4,6 +4,7 @@ import com.example.figuremall_refact.domain.cart.Cart;
 import com.example.figuremall_refact.domain.comment.Comment;
 import com.example.figuremall_refact.domain.common.BaseEntity;
 import com.example.figuremall_refact.domain.enums.Gender;
+import com.example.figuremall_refact.domain.enums.Provider;
 import com.example.figuremall_refact.domain.enums.Role;
 import com.example.figuremall_refact.domain.enums.Status;
 import com.example.figuremall_refact.domain.inquiry.Inquiry;
@@ -52,6 +53,10 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true, length = 20)
+    private Provider provider;
 
     @Column(nullable = true, length = 15)
     private String phoneNum;

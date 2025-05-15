@@ -3,12 +3,12 @@ package com.example.figuremall_refact.dto.productDto;
 import com.example.figuremall_refact.domain.category.Category;
 import com.example.figuremall_refact.domain.product.ProductImage;
 import com.example.figuremall_refact.domain.product.ProductOption;
-import com.example.figuremall_refact.domain.product.ProductOptionValue;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ProductResponseDTO {
@@ -69,6 +69,16 @@ public class ProductResponseDTO {
         Long extraPrice;
         boolean isSoldOut;
 
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProductListDto {
+        Long id;
+        String name;
+        LocalDateTime createdAt;
     }
 
 }

@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/categories")
@@ -25,10 +27,15 @@ public class CategoryController {
         return ApiResponse.onSuccess(categoryService.updateCategory(request));
     }
 
-    @DeleteMapping
-    public ApiResponse<String> deleteCategory(@Valid @RequestBody CategoryRequestDTO.DeleteCategoryDto request) {
-        categoryService.deleteCategory(request);
+    @DeleteMapping("/{categoryId}")
+    public ApiResponse<String> deleteCategory(@PathVariable("categoryId") Long categoryId) {
+        categoryService.deleteCategory(categoryId);
         return ApiResponse.onSuccess("상품 카테고리가 삭제되었습니다.");
+    }
+
+    @GetMapping
+    public ApiResponse<List<CategoryResponseDTO.getCategories>> getCategories() {
+        return ApiResponse.onSuccess(categoryService.getCategories());
     }
 
 }

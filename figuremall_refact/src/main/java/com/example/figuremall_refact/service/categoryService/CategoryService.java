@@ -10,6 +10,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -44,16 +47,34 @@ public class CategoryService {
             category.setName(request.getName());
         }
 
-        if (request.getParentId() != null) {
-            category.setParent(findById(request.getParentId()));
+        if (request.isParentIdUpdated()) {
+            if (request.getParentId() == null) {
+                category.setParent(null);
+            } else {
+                Category parent = findById(request.getParentId());
+                category.setParent(parent);
+            }
         }
 
         return new CategoryResponseDTO.CreateCategoryResponseDto(category.getId());
     }
 
     @Transactional
-    public void deleteCategory(CategoryRequestDTO.DeleteCategoryDto request) {
-        categoryRepository.deleteById(request.getCategoryId());
+    public void deleteCategory(Long categoryId) {
+        categoryRepository.deleteById(categoryId);
+    }
+
+    @Transactional
+    public List<CategoryResponseDTO.getCategories> getCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        List<CategoryResponseDTO.getCategories> dtos = categories.stream()
+                .map(category -> new CategoryResponseDTO.getCategories(
+                        category.getId(),
+                        category.getName(),
+                        category.getParent() != null ? category.getParent().getId() : null
+                ))
+                .collect(Collectors.toList());
+        return dtos;
     }
 
 }

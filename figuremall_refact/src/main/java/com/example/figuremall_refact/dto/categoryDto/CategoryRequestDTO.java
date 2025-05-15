@@ -28,16 +28,7 @@ public class CategoryRequestDTO {
         Long categoryId;
         String name;
         Long parentId;
-
-    }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class DeleteCategoryDto {
-
-        @NotNull
-        Long categoryId;
+        boolean parentIdUpdated;
 
     }
 

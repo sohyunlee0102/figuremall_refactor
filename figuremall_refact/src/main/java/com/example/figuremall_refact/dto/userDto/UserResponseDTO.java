@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.dto.userDto;
 
 import com.example.figuremall_refact.domain.enums.Gender;
+import com.example.figuremall_refact.domain.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,15 @@ public class UserResponseDTO {
     public static class JoinResultDTO {
         String email;
         String username;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AuthResponseDto {
+        String username;
+        Role role;
     }
 
     @Builder

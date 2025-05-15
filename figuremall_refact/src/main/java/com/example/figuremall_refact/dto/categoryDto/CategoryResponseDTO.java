@@ -15,4 +15,14 @@ public class CategoryResponseDTO {
         Long categoryId;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class getCategories {
+        Long id;
+        String name;
+        Long parentId;
+    }
+
 }

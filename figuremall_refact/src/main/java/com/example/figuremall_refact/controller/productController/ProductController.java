@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
@@ -42,14 +44,14 @@ public class ProductController {
     }
 
     @GetMapping("/home")
-    public ApiResponse<Slice<ProductResponseDTO.HomeResponseDto>> homeProducts(@AuthenticationPrincipal UserDetails userDetails, Pageable pageable) {
+    public ApiResponse<List<ProductResponseDTO.HomeResponseDto>> homeProducts(@AuthenticationPrincipal UserDetails userDetails) {
         String email = null;
 
         if (userDetails != null) {
             email = userDetails.getUsername();
         }
 
-        return ApiResponse.onSuccess(productService.getHomeProducts(pageable, email));
+        return ApiResponse.onSuccess(productService.getHomeProducts(email));
     }
 
     @GetMapping("/{productId}")
