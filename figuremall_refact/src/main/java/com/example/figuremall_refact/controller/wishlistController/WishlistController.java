@@ -23,9 +23,9 @@ public class WishlistController {
         return ApiResponse.onSuccess(wishlistService.addWishlist(request, userDetails.getUsername()));
     }
 
-    @DeleteMapping
-    public ApiResponse<String> deleteWishlist(@Valid @RequestBody WishlistRequestDTO.DeleteWishlist request) {
-        wishlistService.deleteWishlist(request.getWishlistId());
+    @DeleteMapping("/{wishlistId}")
+    public ApiResponse<String> deleteWishlist(@PathVariable("wishlistId") Long wishlistId) {
+        wishlistService.deleteWishlist(wishlistId);
         return ApiResponse.onSuccess("찜 해제가 완료되었습니다.");
     }
 

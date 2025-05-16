@@ -15,12 +15,4 @@ public class WishlistRequestDTO {
         Long productId;
     }
 
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class DeleteWishlist {
-        @NotNull
-        Long wishlistId;
-    }
-
 }

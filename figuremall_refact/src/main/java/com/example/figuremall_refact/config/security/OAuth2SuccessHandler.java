@@ -52,8 +52,15 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 .sameSite("Strict")
                 .build();
 
+        ResponseCookie loginCookie = ResponseCookie.from("isLoggedIn", "true")
+                .path("/")
+                .maxAge(Duration.ofHours(1))
+                .httpOnly(false)  // JavaScript에서 읽을 수 있도록
+                .build();
+
         response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, loginCookie.toString());
 
         response.sendRedirect("http://localhost:3000");
     }

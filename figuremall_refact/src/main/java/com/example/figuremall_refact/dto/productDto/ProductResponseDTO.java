@@ -30,7 +30,7 @@ public class ProductResponseDTO {
         Integer price;
         String name;
         Integer likeCount;
-        boolean isWishlisted;
+        Long wishlistId;
         String mainImageUrl;
     }
 

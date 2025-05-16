@@ -20,7 +20,10 @@ public class ProductRequestDTO {
         String name;
         @NotNull
         Integer price;
+        @NotNull
         String description;
+        @NotNull
+        Long categoryId;
         @NotNull
         List<ProductOptionDTO> options;
 
@@ -119,6 +122,16 @@ public class ProductRequestDTO {
 
         @NotNull
         Long productId;
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CheckName {
+
+        @NotNull
+        String name;
 
     }
 

@@ -24,9 +24,9 @@ public class ProductController {
 
     @PostMapping
     public ApiResponse<ProductResponseDTO.AddProductResponseDto> addProduct(
-            @Valid @RequestPart ProductRequestDTO.AddProductDto request,
-            @RequestPart MultipartFile[] files,
-            @RequestPart ProductRequestDTO.ImageInfoDto imageInfo) {
+            @Valid @RequestPart("request") ProductRequestDTO.AddProductDto request,
+            @RequestPart("files") MultipartFile[] files,
+            @RequestPart("imageInfo") ProductRequestDTO.ImageInfoDto imageInfo) {
         return ApiResponse.onSuccess(productService.addProduct(request, files, imageInfo));
     }
 

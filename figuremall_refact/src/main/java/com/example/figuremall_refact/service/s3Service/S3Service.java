@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.service.s3Service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -31,7 +32,8 @@ public class S3Service {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
 
-        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, metadata));
+        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, inputStream, metadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
 
         return amazonS3.getUrl(bucketName, fileName).toString();
     }

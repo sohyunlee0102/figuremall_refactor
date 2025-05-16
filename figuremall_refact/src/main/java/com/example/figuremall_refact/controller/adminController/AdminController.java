@@ -2,13 +2,11 @@ package com.example.figuremall_refact.controller.adminController;
 
 import com.example.figuremall_refact.apiPayload.ApiResponse;
 import com.example.figuremall_refact.dto.productDto.ProductListResponse;
+import com.example.figuremall_refact.dto.productDto.ProductRequestDTO;
 import com.example.figuremall_refact.dto.productDto.ProductResponseDTO;
 import com.example.figuremall_refact.service.productService.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +23,10 @@ public class AdminController {
                                                               @RequestParam(name = "size", defaultValue = "10") int size) {
         return ApiResponse.onSuccess(productService.getProducts(search, page, size));
     }
+
+    @PostMapping("/checkProduct")
+    public ApiResponse<Boolean> checkProduct(@RequestBody ProductRequestDTO.CheckName request) {
+        return ApiResponse.onSuccess(productService.checkName(request));
+    }
+
 }

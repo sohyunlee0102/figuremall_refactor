@@ -9,6 +9,7 @@ import com.example.figuremall_refact.dto.productDto.ProductRequestDTO;
 import com.example.figuremall_refact.dto.productDto.ProductResponseDTO;
 import com.example.figuremall_refact.repository.productRepository.ProductRepository;
 import com.example.figuremall_refact.repository.wishlistRepository.WishlistRepository;
+import com.example.figuremall_refact.service.categoryService.CategoryService;
 import com.example.figuremall_refact.service.userService.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class ProductService {
     private final ProductImageService productImageService;
     private final UserService userService;
     private final WishlistRepository wishlistRepository;
+    private final CategoryService categoryService;
 
     public Product findProductById(Long id) {
         return productRepository.findById(id).orElse(null);
@@ -44,6 +46,7 @@ public class ProductService {
         Product product = Product.builder()
                 .name(productInfo.getName())
                 .price(productInfo.getPrice())
+                .category(categoryService.findById(productInfo.getCategoryId()))
                 .likeCount(0)
                 .description(productInfo.getDescription())
                 .build();
@@ -92,12 +95,15 @@ public class ProductService {
         User user = (email != null) ? userService.findByEmail(email) : null;
 
         return products.stream().map(product -> {
-            String mainImageUrl = productImageService.getMainImage(product);
-            boolean isWishlisted = (user != null) && wishlistRepository.existsByUserAndProduct(user, product);
+                    String mainImageUrl = productImageService.getMainImage(product);
+                    Long wishlistIdLocal = null;
+                    if (wishlistRepository.existsByUserAndProduct(user, product)) {
+                        wishlistIdLocal = wishlistRepository.findByUserAndProduct(user, product).getId();
+                    }
 
-            return new ProductResponseDTO.HomeResponseDto(product.getId(), product.getPrice(), product.getName(), product.getLikeCount(),
-                    isWishlisted, mainImageUrl);
-        })
+                    return new ProductResponseDTO.HomeResponseDto(product.getId(), product.getPrice(), product.getName(), product.getLikeCount(),
+                            wishlistIdLocal, mainImageUrl);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -159,6 +165,11 @@ public class ProductService {
                 .collect(Collectors.toList());
 
         return new ProductListResponse(dtos, productPage.getTotalPages());
+    }
+
+    @Transactional
+    public boolean checkName(ProductRequestDTO.CheckName request) {
+        return productRepository.existsByName(request.getName());
     }
 
 }
