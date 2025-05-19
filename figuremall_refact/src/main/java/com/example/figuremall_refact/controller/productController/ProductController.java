@@ -37,9 +37,9 @@ public class ProductController {
         return ApiResponse.onSuccess(productService.editProduct(request, files));
     }
 
-    @DeleteMapping
-    public ApiResponse<String> deleteProduct(@Valid @RequestBody ProductRequestDTO.DeleteProductDto request) {
-        productService.deleteProduct(request);
+    @DeleteMapping("/{productId}")
+    public ApiResponse<String> deleteProduct(@PathVariable("productId") Long productId) {
+        productService.deleteProduct(productId);
         return ApiResponse.onSuccess("상품이 삭제되었습니다.");
     }
 

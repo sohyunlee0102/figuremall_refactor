@@ -4,6 +4,7 @@ import com.example.figuremall_refact.apiPayload.code.status.ErrorStatus;
 import com.example.figuremall_refact.apiPayload.exception.handler.CartHandler;
 import com.example.figuremall_refact.domain.cart.Cart;
 import com.example.figuremall_refact.domain.user.User;
+import com.example.figuremall_refact.dto.cartDto.CartResponseDTO;
 import com.example.figuremall_refact.repository.cartRepository.CartRepository;
 import com.example.figuremall_refact.service.userService.UserService;
 import jakarta.transaction.Transactional;

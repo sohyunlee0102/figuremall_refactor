@@ -46,7 +46,7 @@ public class ProductOptionValue extends BaseEntity {
     @OneToMany(mappedBy = "productOptionValue", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItemOption> orderItemOptions;
 
-    @OneToMany(mappedBy = "productOptionValue", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<CartItemOption> cartItemOptions = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    private CartItemOption cartItemOption;
 
 }

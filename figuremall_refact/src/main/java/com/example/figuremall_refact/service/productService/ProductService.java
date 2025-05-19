@@ -86,8 +86,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(ProductRequestDTO.DeleteProductDto request) {
-        productRepository.deleteById(request.getProductId());
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
     }
 
     @Transactional

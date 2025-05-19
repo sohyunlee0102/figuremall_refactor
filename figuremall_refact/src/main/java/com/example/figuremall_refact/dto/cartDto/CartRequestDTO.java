@@ -23,7 +23,7 @@ public class CartRequestDTO {
         @NotNull
         Long price;
         @NotNull
-        Long productOptionValueId;
+        List<Long> values;
 
     }
 
@@ -45,7 +45,7 @@ public class CartRequestDTO {
     public static class DeleteCartItemDto {
 
         @NotNull
-        Long cartItemId;
+        List<Long> itemIds;
 
     }
 

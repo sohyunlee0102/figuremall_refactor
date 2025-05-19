@@ -118,16 +118,6 @@ public class ProductRequestDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class DeleteProductDto {
-
-        @NotNull
-        Long productId;
-
-    }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class CheckName {
 
         @NotNull

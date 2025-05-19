@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CartItemOptionService {
@@ -23,7 +25,7 @@ public class CartItemOptionService {
     }
 
     @Transactional
-    public void save(CartItem cartItem, Long productOptionValueId) {
+    public CartItemOption save(CartItem cartItem, Long productOptionValueId) {
         ProductOptionValue productOptionValue = productOptionValueService.findById(productOptionValueId);
 
         CartItemOption cartItemOption = CartItemOption.builder()
@@ -32,6 +34,8 @@ public class CartItemOptionService {
                 .build();
 
         cartItemOptionRepository.save(cartItemOption);
+
+        return cartItemOption;
     }
 
 }

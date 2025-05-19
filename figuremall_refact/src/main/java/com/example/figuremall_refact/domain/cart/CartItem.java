@@ -39,8 +39,7 @@ public class CartItem extends BaseEntity {
     @Column(nullable = false)
     private Long price;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    private CartItemOption cartItemOption;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItemOption> cartItemOptions = new ArrayList<>();
 
 }

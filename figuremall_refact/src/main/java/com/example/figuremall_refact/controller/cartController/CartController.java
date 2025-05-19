@@ -11,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/carts")
@@ -29,10 +31,15 @@ public class CartController {
         return ApiResponse.onSuccess(cartItemService.editQuantity(request));
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public ApiResponse<String> deleteCartItem(@Valid @RequestBody CartRequestDTO.DeleteCartItemDto request) {
         cartItemService.deleteCartItem(request);
         return ApiResponse.onSuccess("장바구니 상품이 삭제되었습니다.");
+    }
+
+    @GetMapping
+    public ApiResponse<List<CartResponseDTO.CartItem>> getCartItems(@AuthenticationPrincipal UserDetails userDetails) {
+        return ApiResponse.onSuccess(cartItemService.getCartItems(userDetails.getUsername()));
     }
 
 }
