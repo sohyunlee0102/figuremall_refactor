@@ -55,7 +55,8 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ApiResponse<ProductResponseDTO.ProductDto> getProduct(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long productId) {
+    public ApiResponse<ProductResponseDTO.ProductDto> getProduct(@AuthenticationPrincipal UserDetails userDetails,
+                                                                 @PathVariable("productId") Long productId) {
         String email = null;
 
         if (userDetails != null) {

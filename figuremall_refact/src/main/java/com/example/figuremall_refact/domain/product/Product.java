@@ -6,6 +6,7 @@ import com.example.figuremall_refact.domain.common.BaseEntity;
 import com.example.figuremall_refact.domain.order.OrderItem;
 import com.example.figuremall_refact.domain.review.Review;
 import com.example.figuremall_refact.domain.wishlist.Wishlist;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -51,6 +52,7 @@ public class Product extends BaseEntity {
     private List<ProductImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<ProductOption> options = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

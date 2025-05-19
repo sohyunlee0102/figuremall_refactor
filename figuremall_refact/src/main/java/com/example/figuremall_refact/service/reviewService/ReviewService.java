@@ -4,7 +4,9 @@ import com.example.figuremall_refact.apiPayload.code.status.ErrorStatus;
 import com.example.figuremall_refact.apiPayload.exception.handler.ReviewHandler;
 import com.example.figuremall_refact.domain.product.Product;
 import com.example.figuremall_refact.domain.review.Review;
+import com.example.figuremall_refact.domain.review.ReviewImage;
 import com.example.figuremall_refact.domain.user.User;
+import com.example.figuremall_refact.dto.productDto.ProductRequestDTO;
 import com.example.figuremall_refact.dto.reviewDto.ReviewRequestDTO;
 import com.example.figuremall_refact.dto.reviewDto.ReviewResponseDTO;
 import com.example.figuremall_refact.repository.reviewRepository.ReviewRepository;
@@ -14,6 +16,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +71,25 @@ public class ReviewService {
     @Transactional
     public void deleteReview(Long reviewId) {
         reviewRepository.deleteById(reviewId);
+    }
+
+    @Transactional
+    public List<ReviewResponseDTO.ProductReviews> getProductReviews(Long productId) {
+        List<Review> reviews = reviewRepository.findAllByProductId(productId);
+        List<ReviewResponseDTO.ProductReviews> productReviews = new ArrayList<>();
+
+        for (Review review : reviews) {
+            List<ReviewResponseDTO.ReviewImages> images = new ArrayList<>();
+
+            for (ReviewImage reviewImage : review.getImages()) {
+                images.add(new ReviewResponseDTO.ReviewImages(reviewImage.getId(), reviewImage.getImageUrl()));
+            }
+
+            productReviews.add(new ReviewResponseDTO.ProductReviews(review.getId(), review.getUser().getId(),
+                    review.getUser().getUsername(), review.getContent(), review.getRating(), images));
+        }
+
+        return productReviews;
     }
 
 }

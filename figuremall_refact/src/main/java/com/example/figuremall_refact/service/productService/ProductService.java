@@ -1,6 +1,7 @@
 package com.example.figuremall_refact.service.productService;
 
 import com.example.figuremall_refact.domain.product.Product;
+import com.example.figuremall_refact.domain.product.ProductImage;
 import com.example.figuremall_refact.domain.product.ProductOption;
 import com.example.figuremall_refact.domain.product.ProductOptionValue;
 import com.example.figuremall_refact.domain.user.User;
@@ -111,10 +112,20 @@ public class ProductService {
     public ProductResponseDTO.ProductDto getProduct(Long productId, String email) {
         Product product = findProductById(productId);
         User user = (email != null) ? userService.findByEmail(email) : null;
-        boolean isWishlisted = (user != null) && wishlistRepository.existsByUserAndProduct(user, product);
+        Long wishlistId = null;
 
         List <ProductOption> options = product.getOptions();
         List <ProductResponseDTO.ProductOptionDto> productOptionDtos = new ArrayList<>();
+        List<ProductImage> images = product.getImages();
+        List<ProductResponseDTO.ProductImageDto> productImageDtos = new ArrayList<>();
+
+        if (wishlistRepository.existsByUserAndProduct(user, product)) {
+            wishlistId = wishlistRepository.findByUserAndProduct(user, product).getId();
+        }
+
+        for (ProductImage image : images) {
+            productImageDtos.add(new ProductResponseDTO.ProductImageDto(image.getId(), image.getImageUrl(), image.getIsMain()));
+        }
 
         for (ProductOption option : options) {
             List<ProductResponseDTO.ProductOptionValueDto> optionValueDtos = new ArrayList<>();
@@ -127,7 +138,7 @@ public class ProductService {
             }
 
             productOptionDtos.add(
-                    new ProductResponseDTO.ProductOptionDto(option, optionValueDtos)
+                    new ProductResponseDTO.ProductOptionDto(option.getId(), option.getOptionName(), optionValueDtos)
             );
         }
 
@@ -137,10 +148,11 @@ public class ProductService {
                 product.getRating(),
                 product.getName(),
                 product.getDescription(),
-                product.getCategory(),
-                isWishlisted,
-                product.getOptions(),
-                product.getImages()
+                product.getCategory().getId(),
+                product.getCategory().getName(),
+                wishlistId,
+                productOptionDtos,
+                productImageDtos
         );
     }
 

@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
@@ -37,5 +39,11 @@ public class ReviewController {
         reviewService.deleteReview(request.getReviewId());
         return ApiResponse.onSuccess("리뷰가 삭제되었습니다.");
     }
+
+    @GetMapping("/{productId}")
+    public ApiResponse<List<ReviewResponseDTO.ProductReviews>> getProductReviews(@PathVariable("productId") Long productId) {
+        return ApiResponse.onSuccess(reviewService.getProductReviews(productId));
+    }
+
 
 }

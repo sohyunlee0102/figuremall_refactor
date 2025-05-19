@@ -52,7 +52,45 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = claims.getSubject();
 
             } catch (Exception e) {
+                System.out.println(accessToken);
+                System.out.println("Token expired");
                 if (refreshToken != null && Boolean.FALSE.equals(redisTemplate.hasKey("BLACKLIST" + refreshToken))) {
+                    Claims refreshClaims = JwtTokenUtil.validateToken(refreshToken);
+                    username = refreshClaims.getSubject();
+
+                    String storedRefresh = redisTemplate.opsForValue().get(username);
+                    if (storedRefresh != null && storedRefresh.equals(refreshToken)) {
+                        String newAccessToken = jwtTokenUtil.generateAccessToken(username);
+                        System.out.println("new : " + newAccessToken);
+
+                        ResponseCookie accessCookie = ResponseCookie.from("accessToken", newAccessToken)
+                                .httpOnly(true)
+                                .secure(true)
+                                .path("/")
+                                .maxAge(Duration.ofMinutes(30))
+                                .sameSite("Strict")
+                                .build();
+
+                        ResponseCookie loginCookie = ResponseCookie.from("isLoggedIn", "true")
+                                .path("/")
+                                .maxAge(Duration.ofHours(1))
+                                .httpOnly(false)
+                                .build();
+
+                        response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
+                        response.addHeader(HttpHeaders.SET_COOKIE, loginCookie.toString());
+
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                }
+            }
+        } else if (refreshToken != null) {
+            if (Boolean.FALSE.equals(redisTemplate.hasKey("BLACKLIST" + refreshToken))) {
+                try {
                     Claims refreshClaims = JwtTokenUtil.validateToken(refreshToken);
                     username = refreshClaims.getSubject();
 
@@ -83,6 +121,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
+                } catch (ExpiredJwtException e) {
+                    throw new AuthHandler(ErrorStatus.TOKEN_EXPIRED);
+                } catch (JwtException e) {
+                    throw new AuthHandler(ErrorStatus.INVALID_TOKEN);
                 }
             }
         }

@@ -44,10 +44,11 @@ public class ProductResponseDTO {
         Float rating;
         String name;
         String description;
-        Category category;
-        boolean isWishlisted;
-        List<ProductOption> options;
-        List<ProductImage> images;
+        Long categoryId;
+        String categoryName;
+        Long wishlistId;
+        List<ProductOptionDto> options;
+        List<ProductImageDto> images;
     }
 
     @Builder
@@ -55,7 +56,8 @@ public class ProductResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ProductOptionDto {
-        ProductOption productOption;
+        Long optionId;
+        String optionName;
         List<ProductOptionValueDto> values;
     }
 
@@ -68,7 +70,16 @@ public class ProductResponseDTO {
         String valueName;
         Long extraPrice;
         boolean isSoldOut;
+    }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProductImageDto {
+        Long imageId;
+        String imageUrl;
+        boolean isMain;
     }
 
     @Builder
