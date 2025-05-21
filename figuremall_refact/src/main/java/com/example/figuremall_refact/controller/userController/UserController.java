@@ -43,4 +43,9 @@ public class UserController {
         return ApiResponse.onSuccess(userService.getUserInfo(userDetails.getUsername()));
     }
 
+    @GetMapping("/orderInfo")
+    public ApiResponse<UserResponseDTO.OrderUserInfo> getOrderUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        return ApiResponse.onSuccess(userService.getOrderUserInfo(userDetails.getUsername()));
+    }
+
 }

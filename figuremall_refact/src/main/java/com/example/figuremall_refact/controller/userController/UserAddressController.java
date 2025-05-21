@@ -8,10 +8,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +23,11 @@ public class UserAddressController {
     public ApiResponse<UserResponseDTO.AddAddressResponseDto> addAddress(@Valid @RequestBody UserRequestDTO.AddAddressDTO request,
                                                                          @AuthenticationPrincipal UserDetails userDetails) {
         return ApiResponse.onSuccess(userAddressService.addAddress(request, userDetails.getUsername()));
+    }
+
+    @GetMapping
+    public ApiResponse<List<UserResponseDTO.Address>> getAddresses(@AuthenticationPrincipal UserDetails userDetails) {
+        return ApiResponse.onSuccess(userAddressService.getAddresses(userDetails.getUsername()));
     }
 
 }

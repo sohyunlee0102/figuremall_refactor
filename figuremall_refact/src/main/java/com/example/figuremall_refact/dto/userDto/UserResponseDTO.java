@@ -62,4 +62,28 @@ public class UserResponseDTO {
         String picture;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Address {
+        Long id;
+        String address;
+        String detail;
+        Integer postalCode;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderUserInfo {
+        String username;
+        String phoneNum;
+        Long addressId;
+        String address;
+        String detail;
+        Integer postalCode;
+    }
+
 }

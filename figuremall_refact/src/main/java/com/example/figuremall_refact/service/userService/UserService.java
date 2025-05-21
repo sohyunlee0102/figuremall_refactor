@@ -170,6 +170,32 @@ public class UserService {
         return new UserResponseDTO.UpdateResponseDto(user.getId());
     }
 
+    @Transactional
+    public UserResponseDTO.OrderUserInfo getOrderUserInfo(String email) {
+        User user = findByEmail(email);
+        UserAddress userAddress = userAddressRepository.findByUserAndIsDefault(user, true);
+
+        if (userAddress == null) {
+            return new UserResponseDTO.OrderUserInfo(
+                    user.getUsername(),
+                    user.getPhoneNum(),
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
+
+        return new UserResponseDTO.OrderUserInfo(
+                user.getUsername(),
+                user.getPhoneNum(),
+                userAddress.getId(),
+                userAddress.getAddress(),
+                userAddress.getDetail(),
+                userAddress.getPostalCode()
+        );
+    }
+
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void deleteInactiveUsers() {

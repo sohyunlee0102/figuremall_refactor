@@ -1,7 +1,6 @@
 package com.example.figuremall_refact.dto.orderDto;
 
-import com.example.figuremall_refact.domain.enums.OrderStatus;
-import com.example.figuremall_refact.dto.deliveryDto.DeliveryRequestDTO;
+import com.example.figuremall_refact.domain.enums.OrderItemStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,11 +16,9 @@ public class OrderRequestDTO {
     public static class CreateOrderDto {
 
         @NotNull
-        Integer totalPrice;
+        Long totalPrice;
         @NotNull
         List<CreateOrderItemDto> items;
-        @NotNull
-        DeliveryRequestDTO.CreateDeliveryDto delivery;
 
     }
 
@@ -31,11 +28,7 @@ public class OrderRequestDTO {
     public static class CreateOrderItemDto {
 
         @NotNull
-        Long productId;
-        @NotNull
-        Integer quantity;
-        @NotNull
-        Integer price;
+        Long cartItemId;
         @NotNull
         List<CreateOrderItemOptionDto> options;
 
@@ -47,7 +40,7 @@ public class OrderRequestDTO {
     public static class CreateOrderItemOptionDto {
 
         @NotNull
-        Long productOptionValueId;
+        Long optionId;
 
     }
 
@@ -59,7 +52,7 @@ public class OrderRequestDTO {
         @NotNull
         Long orderItemId;
         @NotNull
-        OrderStatus status;
+        OrderItemStatus status;
 
     }
 

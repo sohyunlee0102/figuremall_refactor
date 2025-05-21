@@ -31,4 +31,9 @@ public class OrderController {
         return ApiResponse.onSuccess(orderItemService.updateOrderItemStatus(request));
     }
 
+    @GetMapping("/{orderId}")
+    public ApiResponse<OrderResponseDTO.OrderInfo> getOrderInfo(@PathVariable("orderId") Long orderId) {
+        return ApiResponse.onSuccess(orderService.getOrderInfo(orderId));
+    }
+
 }

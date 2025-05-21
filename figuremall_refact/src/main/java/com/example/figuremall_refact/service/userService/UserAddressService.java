@@ -11,6 +11,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserAddressService {
@@ -39,6 +42,18 @@ public class UserAddressService {
     @Transactional
     public void deleteAddress(Long addressId) {
         userAddressRepository.deleteById(addressId);
+    }
+
+    @Transactional
+    public List<UserResponseDTO.Address> getAddresses(String email) {
+        User user = userService.findByEmail(email);
+        List<UserAddress> addresses = userAddressRepository.findAllByUser(user);
+        List<UserResponseDTO.Address> addressList = new ArrayList<>();
+
+        for (UserAddress address : addresses) {
+            addressList.add(new UserResponseDTO.Address(address.getId(), address.getAddress(), address.getDetail(), address.getPostalCode()));
+        }
+        return addressList;
     }
 
 }

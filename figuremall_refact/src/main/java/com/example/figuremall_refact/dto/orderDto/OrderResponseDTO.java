@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class OrderResponseDTO {
 
     @Builder
@@ -21,6 +23,37 @@ public class OrderResponseDTO {
     @AllArgsConstructor
     public static class OrderItemResponseDto {
         Long orderItemId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderInfo {
+        Long totalPrice;
+        List<OrderItemInfo> items;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderItemInfo {
+        Long itemId;
+        String itemName;
+        Long price;
+        Integer quantity;
+        List<OrderItemOptionInfo> options;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderItemOptionInfo {
+        Long optionId;
+        String optionName;
+        Long extraPrice;
     }
 
 }
