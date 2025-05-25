@@ -37,7 +37,7 @@ public class UserResponseDTO {
         Long addressId;
         String address;
         String detail;
-        Integer postalCode;
+        String postalCode;
     }
 
     @Builder
@@ -70,7 +70,8 @@ public class UserResponseDTO {
         Long id;
         String address;
         String detail;
-        Integer postalCode;
+        String postalCode;
+        boolean isDefault;
     }
 
     @Builder
@@ -83,7 +84,7 @@ public class UserResponseDTO {
         Long addressId;
         String address;
         String detail;
-        Integer postalCode;
+        String postalCode;
     }
 
 }

@@ -20,7 +20,7 @@ public class UserAddress extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private User user;
 
@@ -31,7 +31,7 @@ public class UserAddress extends BaseEntity {
     private String detail;
 
     @Column(nullable = false, length = 10)
-    private Integer postalCode;
+    private String postalCode;
 
     @Column(nullable = false)
     private Boolean isDefault;

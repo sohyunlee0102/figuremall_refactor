@@ -28,6 +28,9 @@ public class UserAddressService {
     @Transactional
     public UserResponseDTO.AddAddressResponseDto addAddress(UserRequestDTO.AddAddressDTO request, String email) {
         User user = userService.findByEmail(email);
+        UserAddress defaultAddress = userAddressRepository.findByUserAndIsDefault(user, true);
+        if (defaultAddress != null) defaultAddress.setIsDefault(false);
+
         UserAddress address = UserAddress.builder()
                 .address(request.getAddress())
                 .detail(request.getDetail())
@@ -51,9 +54,31 @@ public class UserAddressService {
         List<UserResponseDTO.Address> addressList = new ArrayList<>();
 
         for (UserAddress address : addresses) {
-            addressList.add(new UserResponseDTO.Address(address.getId(), address.getAddress(), address.getDetail(), address.getPostalCode()));
+            addressList.add(new UserResponseDTO.Address(address.getId(), address.getAddress(), address.getDetail(), address.getPostalCode(),
+                    address.getIsDefault()));
         }
         return addressList;
+    }
+
+    @Transactional
+    public void updateAddress(UserRequestDTO.UserAddressDTO request) {
+        UserAddress address = findById(request.getId());
+
+        if (request.getAddress() != null) {
+            address.setAddress(request.getAddress());
+        }
+
+        if (request.getDetail() != null) {
+            address.setDetail(request.getDetail());
+        }
+
+        if (request.getPostalCode() != null) {
+            address.setPostalCode(request.getPostalCode());
+        }
+
+        if (request.isDefault()) {
+            address.setIsDefault(true);
+        }
     }
 
 }

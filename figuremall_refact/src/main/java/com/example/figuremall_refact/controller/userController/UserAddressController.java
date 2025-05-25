@@ -25,6 +25,12 @@ public class UserAddressController {
         return ApiResponse.onSuccess(userAddressService.addAddress(request, userDetails.getUsername()));
     }
 
+    @PutMapping
+    public ApiResponse<String> updateAddress(@Valid @RequestBody UserRequestDTO.UserAddressDTO request) {
+        userAddressService.updateAddress(request);
+        return ApiResponse.onSuccess("주소가 수정되었습니다.");
+    }
+
     @GetMapping
     public ApiResponse<List<UserResponseDTO.Address>> getAddresses(@AuthenticationPrincipal UserDetails userDetails) {
         return ApiResponse.onSuccess(userAddressService.getAddresses(userDetails.getUsername()));

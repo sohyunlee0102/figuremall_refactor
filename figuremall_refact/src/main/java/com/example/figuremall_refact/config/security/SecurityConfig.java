@@ -54,7 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // 스웨거 api
                         .requestMatchers("/users/**", "/reviews/**", "/address/**", "/inquiries/**",
                                 "/wishlists/**", "/orders/**", "/carts/**", "/terms/**",
-                                "/userAgreements/**", "/auth/logout").hasAnyRole("USER", "ADMIN")
+                                "/userAgreements/**", "/auth/logout", "/payments/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

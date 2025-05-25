@@ -48,26 +48,13 @@ public class UserRequestDTO {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class RefreshTokenDTO {
-
-        @NotNull
-        String refreshToken;
-        @NotBlank
-        @Email
-        String email;
-    }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class AddAddressDTO {
 
         @NotBlank
         String address;
         String detail;
         @NotNull
-        Integer postalCode;
+        String postalCode;
         @NotNull
         Boolean isDefault;
 
@@ -91,7 +78,8 @@ public class UserRequestDTO {
         Long id;
         String address;
         String detail;
-        Integer postalCode;
+        String postalCode;
+        boolean isDefault;
     }
 
     @Getter
@@ -99,13 +87,6 @@ public class UserRequestDTO {
     public static class CheckEmailDuplicationDTO {
         @NotBlank
         String email;
-    }
-
-    @Getter
-    @Setter
-    public static class CheckUsernameDuplicationDTO {
-        @NotBlank
-        String username;
     }
 
 }

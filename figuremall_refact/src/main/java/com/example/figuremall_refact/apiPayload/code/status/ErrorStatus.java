@@ -96,7 +96,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 결제 관련 에러
     PAYMENT_NOT_FOUND(HttpStatus.BAD_REQUEST,"PAYMENT4001","존재하지 않는 결제 ID 입니다."),
-    TRANSACTION_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"PAYMENT4002","이미 존재하는 거래 ID 입니다.");
+    PAY_AMOUNT_NOT_ACCORD(HttpStatus.BAD_REQUEST,"PAYMENT4002","결제 금액이 일치하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

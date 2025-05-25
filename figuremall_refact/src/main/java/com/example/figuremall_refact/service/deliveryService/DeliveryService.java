@@ -3,7 +3,7 @@ package com.example.figuremall_refact.service.deliveryService;
 import com.example.figuremall_refact.apiPayload.code.status.ErrorStatus;
 import com.example.figuremall_refact.apiPayload.exception.handler.DeliveryHandler;
 import com.example.figuremall_refact.domain.delivery.Delivery;
-import com.example.figuremall_refact.domain.enums.DeliveryStatus;
+import com.example.figuremall_refact.domain.enums.OrderItemStatus;
 import com.example.figuremall_refact.domain.order.OrderItem;
 import com.example.figuremall_refact.dto.deliveryDto.DeliveryRequestDTO;
 import com.example.figuremall_refact.dto.deliveryDto.DeliveryResponseDTO;
@@ -31,7 +31,6 @@ public class DeliveryService {
                 .postalCode(request.getPostalCode())
                 .recipientName(request.getRecipientName())
                 .recipientPhone(request.getRecipientPhone())
-                .status(DeliveryStatus.PENDING)
                 .build();
 
         deliveryRepository.save(delivery);
@@ -40,10 +39,7 @@ public class DeliveryService {
     @Transactional
     public DeliveryResponseDTO.UpdateDeliveryResponseDto updateDelivery(DeliveryRequestDTO.UpdateDeliveryDto request) {
         Delivery delivery = findById(request.getDeliveryId());
-
-        if (request.getStatus() != null) {
-            delivery.setStatus(request.getStatus());
-        }
+        OrderItem orderItem = delivery.getOrderItem();
 
         if (request.getShippedAt() != null) {
             delivery.setShippedAt(request.getShippedAt());
@@ -53,7 +49,8 @@ public class DeliveryService {
             delivery.setDeliveredAt(request.getDeliveredAt());
         }
 
-        if (request.getAddress() != null && delivery.getStatus() == DeliveryStatus.PENDING) {
+        if (request.getAddress() != null && (orderItem.getStatus() == OrderItemStatus.PAID ||
+                orderItem.getStatus() == OrderItemStatus.PREPARING)) {
             delivery.setAddress(request.getAddress());
 
             if (request.getDetail() != null) {

@@ -162,6 +162,7 @@ public class UserService {
                 address.setAddress(updatedAddress.getAddress());
                 address.setDetail(updatedAddress.getDetail());
                 address.setPostalCode(updatedAddress.getPostalCode());
+                address.setIsDefault(updatedAddress.isDefault());
 
                 userAddressRepository.save(address);
             }

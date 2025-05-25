@@ -2,7 +2,6 @@ package com.example.figuremall_refact.domain.payment;
 
 import com.example.figuremall_refact.domain.common.BaseEntity;
 import com.example.figuremall_refact.domain.enums.PaymentMethod;
-import com.example.figuremall_refact.domain.enums.PaymentStatus;
 import com.example.figuremall_refact.domain.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,17 +29,16 @@ public class Payment extends BaseEntity {
     private Order order;
 
     @Column(nullable = false)
-    private BigDecimal amount;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private PaymentStatus status;
+    private Integer amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private PaymentMethod method;
 
     @Column(unique = true, length = 50)
-    private String transactionId;
+    private String impUid;
+
+    @Column(length = 100)
+    private String merchantUid;
 
 }

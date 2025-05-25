@@ -1,8 +1,6 @@
 package com.example.figuremall_refact.domain.delivery;
 
 import com.example.figuremall_refact.domain.common.BaseEntity;
-import com.example.figuremall_refact.domain.enums.DeliveryStatus;
-import com.example.figuremall_refact.domain.order.Order;
 import com.example.figuremall_refact.domain.order.OrderItem;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,10 +27,6 @@ public class Delivery extends BaseEntity {
     @JoinColumn(nullable = false)
     private OrderItem orderItem;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private DeliveryStatus status;
-
     @Column(nullable = true)
     private LocalDateTime shippedAt;
 
@@ -46,7 +40,7 @@ public class Delivery extends BaseEntity {
     private String detail;
 
     @Column(nullable = false, length = 10)
-    private Integer postalCode;
+    private String postalCode;
 
     @Column(nullable = false, length = 50)
     private String recipientName;

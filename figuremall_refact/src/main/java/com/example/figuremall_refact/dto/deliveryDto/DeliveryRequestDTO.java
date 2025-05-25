@@ -1,6 +1,5 @@
 package com.example.figuremall_refact.dto.deliveryDto;
 
-import com.example.figuremall_refact.domain.enums.DeliveryStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,7 @@ public class DeliveryRequestDTO {
         String address;
         String detail;
         @NotNull
-        Integer postalCode;
+        String postalCode;
         @NotBlank
         String recipientName;
         @NotBlank
@@ -35,12 +34,11 @@ public class DeliveryRequestDTO {
 
         @NotNull
         Long deliveryId;
-        DeliveryStatus status;
         LocalDateTime shippedAt;
         LocalDateTime deliveredAt;
         String address;
         String detail;
-        Integer postalCode;
+        String postalCode;
         String recipientName;
         String recipientPhone;
         String courierCompany;
