@@ -26,16 +26,6 @@ public class InquiryRequestDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class DeleteInquiryDto {
-
-        @NotNull
-        Long inquiryId;
-
-    }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class AddInquiryResponseDto {
 
         @NotNull

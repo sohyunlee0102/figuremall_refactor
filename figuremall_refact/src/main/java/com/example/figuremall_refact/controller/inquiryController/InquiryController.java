@@ -26,9 +26,9 @@ public class InquiryController {
         return ApiResponse.onSuccess(inquiryService.createInquiry(request, userDetails.getUsername()));
     }
 
-    @DeleteMapping
-    public ApiResponse<String> deleteInquiry(@Valid @RequestBody InquiryRequestDTO.DeleteInquiryDto request) {
-        inquiryService.deleteInquiry(request);
+    @DeleteMapping("/{inquiryId}")
+    public ApiResponse<String> deleteInquiry(@PathVariable("inquiryId") Long inquiryId) {
+        inquiryService.deleteInquiry(inquiryId);
         return ApiResponse.onSuccess("문의가 삭제되었습니다.");
     }
 
@@ -36,6 +36,17 @@ public class InquiryController {
     public ApiResponse<InquiryResponseDTO.CreateInquiryResponseDto> createInquiryResponse(@Valid @RequestBody
                                                                                               InquiryRequestDTO.AddInquiryResponseDto request) {
         return ApiResponse.onSuccess(inquiryResponseService.createInquiryResponse(request));
+    }
+
+    @GetMapping
+    public ApiResponse<InquiryResponseDTO.InquiryPageResponse> getInquiries(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                            @AuthenticationPrincipal UserDetails userDetails) {
+        return ApiResponse.onSuccess(inquiryService.getInquiries(userDetails.getUsername(), page));
+    }
+
+    @GetMapping("/{inquiryId}")
+    public ApiResponse<InquiryResponseDTO.InquiryDetail> getInquiry(@PathVariable("inquiryId") Long inquiryId) {
+        return ApiResponse.onSuccess(inquiryService.getInquiryDetail(inquiryId));
     }
 
 }
