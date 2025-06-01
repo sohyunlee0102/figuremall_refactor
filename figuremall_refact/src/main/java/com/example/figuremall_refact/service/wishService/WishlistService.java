@@ -8,12 +8,14 @@ import com.example.figuremall_refact.domain.wishlist.Wishlist;
 import com.example.figuremall_refact.dto.wishlistDto.WishlistRequestDTO;
 import com.example.figuremall_refact.dto.wishlistDto.WishlistResponseDTO;
 import com.example.figuremall_refact.repository.wishlistRepository.WishlistRepository;
+import com.example.figuremall_refact.service.productService.ProductImageService;
 import com.example.figuremall_refact.service.productService.ProductService;
 import com.example.figuremall_refact.service.userService.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +25,7 @@ public class WishlistService {
     private final WishlistRepository wishlistRepository;
     private final UserService userService;
     private final ProductService productService;
+    private final ProductImageService productImageService;
 
     public Wishlist findById(Long id) {
         return wishlistRepository.findById(id).orElseThrow(() -> new WishlistHandler(ErrorStatus.WISHLIST_NOT_FOUND));
@@ -50,6 +53,22 @@ public class WishlistService {
         product.setLikeCount(product.getLikeCount() - 1);
 
         wishlistRepository.delete(wishlist);
+    }
+
+    @Transactional
+    public List<WishlistResponseDTO.GetWishlist> getWishlists(String email) {
+        User user = userService.findByEmail(email);
+
+        List<Wishlist> wishlists = wishlistRepository.findAllByUser(user);
+        List<WishlistResponseDTO.GetWishlist> dtos = new ArrayList<>();
+
+        for (Wishlist wishlist : wishlists) {
+            Product product = productService.findProductById(wishlist.getProduct().getId());
+            dtos.add(new WishlistResponseDTO.GetWishlist(product.getId(), product.getPrice(), product.getName(),
+                    product.getLikeCount(), wishlist.getId(), productImageService.getMainImage(product)));
+        }
+
+        return dtos;
     }
 
 }

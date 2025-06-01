@@ -50,19 +50,8 @@ public class PostRequestDTO {
         Long postId;
         String title;
         String content;
-        PostCategory category;
         List<Long> deleteFileIds;
         List<AddPostFileDto> files;
-
-    }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class DeletePostDto {
-
-        @NotNull
-        Long postId;
 
     }
 

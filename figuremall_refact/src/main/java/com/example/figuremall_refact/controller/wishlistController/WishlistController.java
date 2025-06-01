@@ -10,6 +10,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/wishlists")
@@ -27,6 +29,11 @@ public class WishlistController {
     public ApiResponse<String> deleteWishlist(@PathVariable("wishlistId") Long wishlistId) {
         wishlistService.deleteWishlist(wishlistId);
         return ApiResponse.onSuccess("찜 해제가 완료되었습니다.");
+    }
+
+    @GetMapping
+    public ApiResponse<List<WishlistResponseDTO.GetWishlist>> getWishlists(@AuthenticationPrincipal UserDetails userDetails) {
+        return ApiResponse.onSuccess(wishlistService.getWishlists(userDetails.getUsername()));
     }
 
 }

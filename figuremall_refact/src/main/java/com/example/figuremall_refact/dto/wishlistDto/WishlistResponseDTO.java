@@ -15,4 +15,17 @@ public class WishlistResponseDTO {
         Long wishlistId;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetWishlist {
+        Long productId;
+        Integer price;
+        String name;
+        Integer likeCount;
+        Long wishlistId;
+        String mainImageUrl;
+    }
+
 }

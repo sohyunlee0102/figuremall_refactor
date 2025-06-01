@@ -7,6 +7,7 @@ import com.example.figuremall_refact.service.postService.LikeService;
 import com.example.figuremall_refact.service.postService.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -21,21 +22,21 @@ public class PostController {
     private final LikeService likeService;
 
     @PostMapping
-    public ApiResponse<PostResponseDTO.AddPostResponseDto> addPost(@Valid @RequestPart PostRequestDTO.AddPostDto request,
-                                                                   @RequestPart(required = false)MultipartFile[] files,
+    public ApiResponse<PostResponseDTO.AddPostResponseDto> addPost(@Valid @RequestPart(name = "request") PostRequestDTO.AddPostDto request,
+                                                                   @RequestPart(name = "files", required = false)MultipartFile[] files,
                                                                    @AuthenticationPrincipal UserDetails userDetails) {
         return ApiResponse.onSuccess(postService.addPost(request, files, userDetails.getUsername()));
     }
 
     @PutMapping
-    public ApiResponse<PostResponseDTO.AddPostResponseDto> editPost(@Valid @RequestPart PostRequestDTO.EditPostDto request,
-                                                                    @RequestPart(required = false)MultipartFile[] files) {
+    public ApiResponse<PostResponseDTO.AddPostResponseDto> editPost(@Valid @RequestPart(name = "request") PostRequestDTO.EditPostDto request,
+                                                                    @RequestPart(name = "files", required = false)MultipartFile[] files) {
         return ApiResponse.onSuccess(postService.editPost(request, files));
     }
 
-    @DeleteMapping
-    public ApiResponse<String> deletePost(@Valid @RequestBody PostRequestDTO.DeletePostDto request) {
-        postService.deletePost(request.getPostId());
+    @DeleteMapping("/{postId}")
+    public ApiResponse<String> deletePost(@PathVariable("postId") Long postId) {
+        postService.deletePost(postId);
         return ApiResponse.onSuccess("게시글이 삭제되었습니다.");
     }
 
@@ -49,6 +50,19 @@ public class PostController {
     public ApiResponse<String> deleteLike(@Valid @RequestBody PostRequestDTO.DeleteLikeDto request) {
         likeService.deleteLike(request);
         return ApiResponse.onSuccess("좋아요가 취소되었습니다.");
+    }
+
+    @GetMapping
+    public ApiResponse<Page<PostResponseDTO.PostList>> getPosts(@RequestParam(name = "category", defaultValue = "community") String category,
+                                                                @RequestParam(name = "page", defaultValue = "0") int page,
+                                                                @RequestParam(name = "size", defaultValue = "10") int size,
+                                                                @RequestParam(name = "sortBy", defaultValue = "createdAt") String sortBy) {
+        return ApiResponse.onSuccess(postService.getPosts(category, page, size, sortBy));
+    }
+
+    @GetMapping("/{postId}")
+    public ApiResponse<PostResponseDTO.PostResponse> getPost(@PathVariable("postId") Long postId) {
+        return ApiResponse.onSuccess(postService.getPost(postId));
     }
 
 }

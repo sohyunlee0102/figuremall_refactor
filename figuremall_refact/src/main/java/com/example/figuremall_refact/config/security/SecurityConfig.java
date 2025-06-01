@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용 안 함
                 .authorizeHttpRequests((requests) ->requests
                         .requestMatchers("/admin/**", "/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/posts").permitAll()
                         .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/products").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/products").hasRole("ADMIN")
@@ -54,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // 스웨거 api
                         .requestMatchers("/users/**", "/reviews/**", "/address/**", "/inquiries/**",
                                 "/wishlists/**", "/orders/**", "/carts/**", "/terms/**",
-                                "/userAgreements/**", "/auth/logout", "/payments/**").hasAnyRole("USER", "ADMIN")
+                                "/userAgreements/**", "/auth/logout", "/payments/**", "/posts/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
