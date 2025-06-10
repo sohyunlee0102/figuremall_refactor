@@ -18,29 +18,29 @@ import org.springframework.stereotype.Service;
 public class LikeService {
 
     private final LikeRepository likeRepository;
-    private final UserService userService;
-    private final PostService postService;
 
     public Like findById(Long id) {
         return likeRepository.findById(id).orElseThrow(() -> new PostHandler(ErrorStatus.LIKE_NOT_FOUND));
     }
 
     @Transactional
-    public PostResponseDTO.LikeResponseDto addLike(PostRequestDTO.AddLikeDto request, String email) {
-        User user = userService.findByEmail(email);
-        Post post = postService.findById(request.getPostId());
-
+    public void addLike(Post post, User user) {
         Like like = Like.builder()
                 .user(user)
                 .post(post)
                 .build();
 
-        return new PostResponseDTO.LikeResponseDto(likeRepository.save(like).getId());
+        likeRepository.save(like);
     }
 
     @Transactional
-    public void deleteLike(PostRequestDTO.DeleteLikeDto request) {
-        likeRepository.deleteById(request.getLikeId());
+    public void deleteLike(Post post, User user) {
+        likeRepository.deleteLikeByUserAndPost(user, post);
+    }
+
+    @Transactional
+    public boolean isLiked(User user, Post post) {
+        return likeRepository.existsLikeByUserAndPost(user, post);
     }
 
 }

@@ -58,20 +58,10 @@ public class PostRequestDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class AddLikeDto {
+    public static class DeleteFile {
 
         @NotNull
-        Long postId;
-
-    }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class DeleteLikeDto {
-
-        @NotNull
-        Long likeId;
+        Long fileId;
 
     }
 

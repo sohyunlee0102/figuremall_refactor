@@ -9,6 +9,7 @@ import com.example.figuremall_refact.domain.user.User;
 import com.example.figuremall_refact.dto.postDto.PostRequestDTO;
 import com.example.figuremall_refact.dto.postDto.PostResponseDTO;
 import com.example.figuremall_refact.repository.postRepository.PostRepository;
+import com.example.figuremall_refact.service.s3Service.S3Service;
 import com.example.figuremall_refact.service.userService.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
     private final PostFileService postFileService;
+    private final LikeService likeService;
+    private final S3Service s3Service;
 
     public Post findById(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new PostHandler(ErrorStatus.POST_NOT_FOUND));
@@ -81,38 +84,47 @@ public class PostService {
 
     @Transactional
     public Page<PostResponseDTO.PostList> getPosts(String category, Integer page, Integer size, String sortBy) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        Pageable pageable;
+        Page<Post> postPage;
 
         if ("likes".equals(sortBy)) {
-            sort = Sort.by(Sort.Direction.DESC, "likes");
+            pageable = PageRequest.of(page, size);
+            postPage = postRepository.findByCategoryOrderByLikes(category, pageable);
         } else if ("views".equals(sortBy)) {
-            sort = Sort.by(Sort.Direction.DESC, "views");
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "views"));
+            postPage = postRepository.findByCategory(PostCategory.valueOf(category), pageable);
+        } else {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+            postPage = postRepository.findByCategory(PostCategory.valueOf(category), pageable);
         }
 
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        return postRepository.findByCategory(PostCategory.valueOf(category), pageable)
-                .map(post -> PostResponseDTO.PostList.builder()
-                        .id(post.getId())
-                        .title(post.getTitle())
-                        .content(post.getContent())
-                        .views(post.getViews())
-                        .likes(post.getLikes().size())
-                        .writer(post.getUser().getUsername())
-                        .createdAt(post.getCreatedAt())
-                        .build()
-                );
+        return postPage.map(post -> PostResponseDTO.PostList.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .views(post.getViews())
+                .likes(post.getLikes().size())
+                .writer(post.getUser().getUsername())
+                .createdAt(post.getCreatedAt())
+                .build()
+        );
     }
 
     @Transactional
-    public PostResponseDTO.PostResponse getPost(Long postId) {
+    public PostResponseDTO.PostResponse getPost(Long postId, String email) {
+        User user = null;
+        if (email != null) user = userService.findByEmail(email);
         Post post = findById(postId);
+        User writer = userService.findByEmail(post.getUser().getEmail());
         post.setViews(post.getViews() + 1);
         List<PostFile> files = post.getFiles();
         List<PostResponseDTO.Files> dtos = new ArrayList<>();
+        boolean isWriter = false;
+        if (user != null) isWriter = user.equals(writer);
+        boolean isLiked = likeService.isLiked(user, post);
 
         for (PostFile file : files) {
-            dtos.add(new PostResponseDTO.Files(file.getFileName(), file.getFileUrl(), file.getFileType(), file.getFileSize()));
+            dtos.add(new PostResponseDTO.Files(file.getId(), file.getFileName(), file.getFileUrl(), file.getFileType(), file.getFileSize()));
         }
 
         return PostResponseDTO.PostResponse.builder()
@@ -125,7 +137,32 @@ public class PostService {
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .files(dtos)
+                .isWriter(isWriter)
+                .isLiked(isLiked)
                 .build();
+    }
+
+    @Transactional
+    public void addLike(Long postId, String email) {
+        User user = userService.findByEmail(email);
+        Post post = findById(postId);
+
+        likeService.addLike(post, user);
+    }
+
+    @Transactional
+    public void deleteLike(Long postId, String email) {
+        User user = userService.findByEmail(email);
+        Post post = findById(postId);
+
+        likeService.deleteLike(post, user);
+    }
+
+    @Transactional
+    public void deleteFile(Long fileId) {
+        PostFile postFile = postFileService.findById(fileId);
+        s3Service.deleteFile(postFile.getFileUrl());
+        postFileService.deleteFile(postFile);
     }
 
 }

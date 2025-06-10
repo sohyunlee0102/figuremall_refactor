@@ -1,5 +1,6 @@
 package com.example.figuremall_refact.dto.postDto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,6 +55,11 @@ public class PostResponseDTO {
         LocalDateTime createdAt;
         LocalDateTime updatedAt;
         List<Files> files;
+        @JsonProperty("isWriter")
+        boolean isWriter;
+        @JsonProperty("isLiked")
+        boolean isLiked;
+
     }
 
     @Getter
@@ -61,10 +67,19 @@ public class PostResponseDTO {
     @AllArgsConstructor
     @Builder
     public static class Files {
+        Long id;
         private String fileName;
         private String fileUrl;
         private String fileType;
         private Long fileSize;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ImageUrl {
+        String imageUrl;
     }
 
 }

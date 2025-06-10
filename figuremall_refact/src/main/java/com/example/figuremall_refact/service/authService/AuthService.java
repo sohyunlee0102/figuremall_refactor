@@ -139,8 +139,15 @@ public class AuthService {
                 .sameSite("Strict")
                 .build();
 
+        ResponseCookie loginCookie = ResponseCookie.from("isLoggedIn", "")
+                .path("/")
+                .maxAge(0)
+                .httpOnly(false)
+                .build();
+
         response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, loginCookie.toString());
     }
 
     @Transactional

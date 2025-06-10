@@ -109,4 +109,8 @@ public class PostFileService {
         postFileRepository.saveAll(postFiles);
     }
 
+    public void deleteFile(PostFile postFile) {
+        postFileRepository.delete(postFile);
+    }
+
 }
